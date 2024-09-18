@@ -6,6 +6,7 @@
 package entity;
 
 import java.awt.image.BufferedImage;
+
 import java.awt.Rectangle;
 
 public class Entity {
