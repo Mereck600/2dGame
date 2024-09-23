@@ -8,21 +8,21 @@ public class CollisionChecker {
 	public CollisionChecker(GamePanel gp) {
 		this.gp = gp;
 	}
-//method: ok so we are looking for the hitbox here in this method 
+	//method: ok so we are looking for the hitbox here in this method 
 	public void checkTile(Entity entity) { //entity not player bc it is not just for player
 		int entityLeftWorldX = entity.worldX + entity.solidArea.x;
 		int entityRightWorldX = entity.worldX + entity.solidArea.x +entity.solidArea.width;
 		int entityTopWorldY = entity.worldY + entity.solidArea.y;
 		int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
 		//from this we can find their col and row numbers
-		
+
 		int entityLeftCol = entityLeftWorldX/gp.tileSize;
 		int entityRightCol = entityRightWorldX/gp.tileSize;
 		int entityTopRow = entityTopWorldY/gp.tileSize;
 		int entityBottomRow = entityBottomWorldY/gp.tileSize;
-		
+
 		int tileNum1, tileNum2; // only 2 nums because we only really care about left and right shoulder
-				
+
 		switch(entity.direction) {
 		case "up":
 			entityTopRow = (entityTopWorldY - entity.speed)/gp.tileSize;
@@ -56,12 +56,91 @@ public class CollisionChecker {
 				entity.collisionOn = true;
 			}
 			break;
-			
-			
+
+
 		}
-		
-		
-		
-		
+
+
+
+
+	}
+	/**
+	 * 
+	 *recieve entity player or something else and check if entity is player or not 
+	 *return integer
+	 *check if player hits object and if yes return index and process reaction
+	 *Uses different method than the tile checker because there are more tiles thna objects and 
+	 *it would be too inefficent
+	 */
+	public int checkObject(Entity entity, boolean player) {
+		 int index = 999;
+		//scan obj array 
+		for(int i =0; i < gp.obj.length; i++) {
+			if(gp.obj[i] != null) {
+				//get entity's solid are pos
+				entity.solidArea.x = entity.worldX + entity.solidArea.x;
+				entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+				//get objects solid area posn
+				gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
+				gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+
+				switch (entity.direction) {
+			    case "up":
+			        entity.solidArea.y -= entity.speed;
+			        if(entity.solidArea.intersects(gp.obj[i].solidArea)) {
+			        	
+						  if(gp.obj[i].collision == true) { 
+							  entity.collisionOn = true; }
+						  if(player ==  true) { 
+							  index =i; }
+						 
+			        	
+			        	//System.out.println("up collision");
+			        }
+			        break; 
+			    case "down":
+			        entity.solidArea.y += entity.speed;
+			        if(entity.solidArea.intersects(gp.obj[i].solidArea)) {
+			        	 if(gp.obj[i].collision == true) { 
+							  entity.collisionOn = true; }
+						  if(player ==  true) { 
+							  index =i; }
+			          //  System.out.println("down collision");
+			        }
+			        break; 
+			    case "left":
+			        entity.solidArea.x -= entity.speed;
+			        if(entity.solidArea.intersects(gp.obj[i].solidArea)) {
+			        	 if(gp.obj[i].collision == true) { 
+							  entity.collisionOn = true; }
+						  if(player ==  true) { 
+							  index =i; }
+			           // System.out.println("left collision");
+			        }
+			        break; 
+			    case "right":
+			        entity.solidArea.x += entity.speed;
+			        if(entity.solidArea.intersects(gp.obj[i].solidArea)) {
+			        	 if(gp.obj[i].collision == true) { 
+							  entity.collisionOn = true; }
+						  if(player ==  true) { 
+							  index =i; }
+			           // System.out.println("right collision");
+			        }
+			        break; 
+			}
+				//Reset the values so that the numbers don't keep adding 
+				entity.solidArea.x = entity.solidAreaDefaultX;
+				entity.solidArea.y = entity.solidAreaDefaultY;
+				gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
+				gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+				
+			}
+
+		}
+
+		return index; 
+
 	}
 }

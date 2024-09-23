@@ -2,7 +2,9 @@ package main;
 
 import javax.swing.JPanel;
 
+
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import java.awt.Color;
@@ -27,18 +29,25 @@ public class GamePanel extends JPanel implements Runnable{
 	//world map parameters: these can be changed if we want
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
-	public final int worldWidth = tileSize * maxWorldCol;
-	public final int worldHeight = tileSize * maxWorldRow;
+	//public final int worldWidth = tileSize * maxWorldCol;
+	//public final int worldHeight = tileSize * maxWorldRow;
 	
 	
 	//FPS 
 	int FPS = 60;
+	//SYSTEM
 	TileManager tileM = new TileManager(this);
 	KeyHandler keyH = new KeyHandler();	
-	
-	Thread gameThread; //This is the clock set up once started it will run until stopped kinda like a loop
+	Sound music = new Sound(); //overall game music
+	Sound se = new Sound(); //Sound effects for the game
 	public CollisionChecker cChecker = new CollisionChecker(this);
+	public AssetSetter aSetter = new AssetSetter(this);
+	public UI ui = new UI(this);
+	Thread gameThread; //This is the clock set up once started it will run until stopped kinda like a loop
+	
+	//Entity and Onjects 
 	public Player player = new Player(this,keyH);
+	public SuperObject obj[] = new SuperObject[10]; //ten slots for object and can be replaced in the game but only 10 displayed
 	
 	
 	
@@ -51,7 +60,13 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true); //this makes the gamePanel ale to recieve input
 		
 	}
-
+	public void setUpGame() {
+		aSetter.setObject();
+		
+		playMusic(0);
+		
+		
+	}
 
 /**
  * this is the run method i.e. runnable and starts the thread thread calls this 
@@ -150,7 +165,18 @@ public class GamePanel extends JPanel implements Runnable{
 		//*** DO NOT PUT DRAW ITEMS ABOVE (VERY IMPORTANT)  ****//
 		tileM.draw(g2); // this needs to be before player tiles or any other layer this is base
 		
+		//object
+		for(int i =0; i<obj.length; i++) { //scan array
+			if(obj[i] != null) {  //checks to see if there is an item makes sure to check for null so no error
+				obj[i].draw(g2, this);
+			}
+		}
+		
+		//Player
 		player.draw(g2);
+		
+		//ui
+		ui.draw(g2);
 		
 		
 		
@@ -158,6 +184,20 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 		
+	}
+	
+	public void playMusic(int i) {
+		music.setFile(i);
+		music.play();
+		music.loop();
+		
+	}
+	public void stopMusic() {
+		music.stop();
+	}
+	public void playSE(int i ) {
+		se.setFile(i);
+		se.play();
 	}
 	
 }

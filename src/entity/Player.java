@@ -12,29 +12,32 @@ import main.KeyHandler;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
-	
+
 	GamePanel gp;
 	KeyHandler keyH;
 	public final int screenX;   //the background scrolls as the player moves 
 	public final int screenY;  //these dont change
-	
+	public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
+	int standCounter =1;
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
 		this.keyH = keyH;
-		
+
 		screenX =gp.screenWidth/2 -(gp.tileSize/2); //returns halfway point of the screen
 		screenY =gp.screenHeight/2 - (gp.tileSize/2); 
 		//colision area for the player character 
 		solidArea = new Rectangle(); // x,y,width,height
 		solidArea.x = 8; //this is where it starts 
 		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x; //we want to record the default values 
+		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32; //this will be smaller than the character
 		solidArea.height = 32;
-		
-		
+
+
 		setDefaultValues();
 		getPlayerImage();
-		
+
 	}
 	//sets the default values of the player
 	public void setDefaultValues() {
@@ -46,17 +49,17 @@ public class Player extends Entity {
 	//gets the pictues needed for the player model. 
 	public void getPlayerImage() {
 		try {
-	        up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-	        up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-	        down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-	        down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-	        left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-	        left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-	        right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-	        right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
+			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
+			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
+			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
+			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
+			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
+			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
+			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	public void update() {
 		//this if is what chagnges the player character from walking animation to standing 
@@ -64,25 +67,29 @@ public class Player extends Entity {
 			//all of these ifs handle movement of the character
 			if(keyH.upPressed == true) {
 				direction = "up";
-				
-				
+
+
 			}
 			else if(keyH.downPressed == true) {
 				direction = "down";
-				
+
 			}
 			else if(keyH.leftPressed == true){
 				direction = "left";
-				
-				
+
+
 			}
 			else if(keyH.rightPressed == true) {
 				direction = "right";
-				
+
 			}
 			//check tile collision
 			collisionOn = false;
 			gp.cChecker.checkTile(this); //pases player into checkTile method in collionChecker 
+
+			//check Object collision
+			int objIndex = gp.cChecker.checkObject(this, true);
+			pickUpObject(objIndex);
 			//update gets called 60x per sec so every frame this below is
 			//called and when it hits 12 the player image will change
 			//if colliosion is false playe can move
@@ -100,10 +107,10 @@ public class Player extends Entity {
 				case "right":
 					worldX += speed;
 					break;
-				
+
 				}
 			}
-			
+
 			spriteCounter++;
 			if(spriteCounter > 13) { //possibly make this lower 10toofast 12a little fast 15maybe slow
 				if(spriteNum == 1) {
@@ -115,19 +122,78 @@ public class Player extends Entity {
 				spriteCounter =0;
 			}
 		}
-		
-		
+		else { ///makes the player stop after a set time so that that it looks more natural
+			standCounter++;
+			if(standCounter ==20) {
+				spriteNum = 1;
+				standCounter = 0;
+			}
+			
+		}
+
+
 	}
+	/**
+	 * this determines what happends after a collision with an object.
+	 * 
+	 */
+	public void pickUpObject(int i) {
+
+	    if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
+	        String objectName = gp.obj[i].name;
+
+	        switch(objectName) {
+	            case "Key":
+	            	gp.playSE(1); //this calls playSE from gp and sets it to the key effect
+	                hasKey++;
+	                gp.obj[i] = null; // Remove the object after using its name
+	                gp.ui.showMessage("You have picked up a key!");
+	                
+	               
+	                
+	                // System.out.println("Key: " + hasKey);
+	                break;
+
+	            case "Door":
+	                if(hasKey > 0) {
+	                	gp.playSE(3); //this calls playSE from gp and sets it to the door effect
+	                    gp.obj[i] = null; // Remove the door
+	                    hasKey--; // Reduce the number of keys
+	                    gp.ui.showMessage("You opened a door!");
+	                }
+	                else {
+	                	gp.ui.showMessage("You need a key to open the door");
+	                }
+	                //System.out.println("Key: " + hasKey);
+	                break;
+	            case "Boots": //makes the player faster
+	            	gp.playSE(2); //this calls playSE from gp and sets it to the powerUP effect
+	            	speed += 2;
+	            	gp.obj[i] = null;
+	            	gp.ui.showMessage("Speed Up!");
+	            	
+	            
+	            	break;
+	            case "Chest":
+	            	gp.ui.gameFinished =true;
+	            	gp.stopMusic();
+	            	gp.playSE(4);
+	            	
+	                break;
+        	   }
+	    }
+	}
+
 	public void draw(Graphics2D g2) {
 		//test object :
 		//g2.setColor(Color.white); // setColor(color c) sets a color for drawing objects		
 		//g2.fillRect(x, y, gp.tileSize, gp.tileSize); 
 		//*******************************************//
-		
+
 		//here is the method that draws the player image  should be self explainitory
 		//switch works the same as an if statement for the most part. 
 		BufferedImage image = null;
-		
+
 		switch(direction) {
 		case "up":
 			if(spriteNum == 1) {
