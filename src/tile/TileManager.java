@@ -13,9 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 public class TileManager {
 	GamePanel gp;
@@ -26,43 +29,88 @@ public class TileManager {
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		
-		tile = new Tile[10]; // this means im creating 10 kinds of tiles ie grass water wall can be changed 
+		tile = new Tile[50]; // this means im creating 10 kinds of tiles ie grass water wall can be changed 
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow]; //this is the array that reads .txt file 
 		getTileImage();
-		loadMap("/maps/world01.txt");
+		loadMap("/maps/worldV2.txt");
 		
 	}
 	
 	public void getTileImage() {
-		try {
+		
 			//instanciate the tile array
-			//grass
-			tile[0]= new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png")); //file get put into imageIo to display
-			//wall
-			tile[1]= new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tile[1].collision = true; //makes collision you dont need to change if it is not collision tile
+			//calls the setup method below 
+			//passes the index of the array passes the name of the tile and passes the collision bool
+		
+			setup(0, "grass00", false); //grass
+			setup(1, "grass00", false); //wall
+			setup(2, "grass00", false); //water
+			setup(3, "grass00", false); //earth
+			setup(4, "grass00", false); //tree
+			setup(5, "grass00", false); //sand
+			setup(6, "grass00", false); //sand
+			setup(7, "grass00", false); //sand
+			setup(8, "grass00", false); //sand
+			setup(9, "grass00", false); //sand
+			//actual tiles
+			setup(10, "grass00", false); // all above are actually grass but dont use them 
+			setup(11, "grass01", false); //grass
 			//water
-			tile[2]= new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-			tile[2].collision = true;
+			setup(12, "water00", true); //wall
+			setup(13, "water01", true); //water
+			setup(14, "water02", true); //earth
+			setup(15, "water03", true); //tree
+			setup(16, "water04", true); //sand
+			setup(17, "water05", true); //sand
+			setup(18, "water06", true); //sand
+			setup(19, "water07", true); //sand
+			setup(20, "water08", true); //sand
+			setup(21, "water09", true);
+			setup(22, "water10", true); //sand
+			setup(23, "water11", true);
+			setup(24, "water12", true); //sand
+			setup(25, "water13", true);
+			//road
+			setup(26, "road00", false); 
+			setup(27, "road01", false); 
+			setup(28, "road02", false);
+			setup(29, "road03", false); 
+			setup(30, "road04", false); 
+			setup(31, "road05", false); 
+			setup(32, "road06", false); 
+			setup(33, "road07", false); 
+			setup(34, "road08", false); 
+			setup(35, "road09", false); 
+			setup(36, "road10", false); 
+			setup(37, "road11", false); 
+			setup(38, "road12", false); 
 			//earth
-			tile[3]= new Tile();
-			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-			//tree
-			tile[4]= new Tile();
-			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tile[4].collision = true;
-			//sand
-			tile[5]= new Tile();
-			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
+			setup(39, "earth", false); //earth
+			setup(40, "wall", true); //wall
+			setup(41, "tree", true); //tree
+			
+			
+			
+			
+			
+			
+		
+	}
+	
+	public void setup(int index, String imageName, boolean collision) {
+		UtilityTool uTool = new UtilityTool();
+		
+		try {
+			tile[index] = new Tile();
+			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/"+imageName +".png"));
+			tile[index].image = uTool.scaledImage(tile[index].image, gp.tileSize, gp.tileSize);
+			tile[index].collision = collision;
 		}
 		catch(IOException e){
-			e.printStackTrace(); //shows error
-			
+			e.printStackTrace();
 		}
 	}
+	
 	public void loadMap(String filePath) {
 		try {
 			InputStream is = getClass().getResourceAsStream(filePath);
@@ -118,7 +166,7 @@ public class TileManager {
 					worldX  - gp.tileSize< gp.player.worldX + gp.player.screenX &&
 					worldY + gp.tileSize> gp.player.worldY - gp.player.screenY &&
 					worldY - gp.tileSize< gp.player.worldY +gp.player.screenY) {
-				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null); //tile[ileNum].image is the idex of above func
+				g2.drawImage(tile[tileNum].image, screenX, screenY, null); //tile[ileNum].image is the idex of above func
 				
 			}
 			

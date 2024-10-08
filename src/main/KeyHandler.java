@@ -9,7 +9,14 @@ import java.awt.event.KeyListener;
  */
 public class KeyHandler implements KeyListener{
 //these 2 overrides needed for this to work 
+	GamePanel gp;
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
+	//debug
+	public boolean checkDrawTime;
+	
+	public KeyHandler(GamePanel gp) {
+		this.gp = gp;
+	}
 	
 	/**
 	 * this is used to get the direction of what key was pressed where
@@ -33,6 +40,27 @@ public class KeyHandler implements KeyListener{
 		if(code == KeyEvent.VK_D) { //user presses w key
 			rightPressed = true;
 
+		}
+		if(code == KeyEvent.VK_P) { //user presses w key
+			if(gp.gameState == gp.playState) {
+				gp.gameState = gp.pauseState;
+			}
+			else if (gp.gameState == gp.pauseState) {
+				gp.gameState = gp.playState;
+			}
+
+		}
+		
+		//debug 
+		if(code == KeyEvent.VK_T) { //user presses w key
+			if(checkDrawTime == false) {
+				checkDrawTime = true; 
+				
+			}
+			else if(checkDrawTime == true) {
+				checkDrawTime = false;
+			}
+			
 		}
 		
 		

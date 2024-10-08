@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.Graphics2D;
 import main.GamePanel;
+import main.UtilityTool;
 
 
 public class SuperObject {
@@ -19,7 +20,7 @@ public class SuperObject {
 	public Rectangle solidArea = new Rectangle(0,0,40,40); //whole tile for object is solid can be changed later
 	public int solidAreaDefaultX =0;
 	public int solidAreaDefaultY =0;
-	
+	UtilityTool uTool = new UtilityTool();
 	
 	
 	public void draw(Graphics2D g2, GamePanel gp) {

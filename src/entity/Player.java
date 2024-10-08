@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Color;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
+
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
@@ -17,7 +20,7 @@ public class Player extends Entity {
 	KeyHandler keyH;
 	public final int screenX;   //the background scrolls as the player moves 
 	public final int screenY;  //these dont change
-	public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
+	//public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
 	int standCounter =1;
 	public Player(GamePanel gp, KeyHandler keyH) {
 		this.gp = gp;
@@ -48,18 +51,30 @@ public class Player extends Entity {
 	}
 	//gets the pictues needed for the player model. 
 	public void getPlayerImage() {
+		//similar to tile we are scaling the image outside of the main draw method to fix the rendering time
+		//only passing the name into the setup though because not indexing the player images
+		up1 = setup("boy_up_1");
+		up2 = setup("boy_up_2");
+		down1 = setup("boy_down_1");
+		down2 = setup("boy_down_2");
+		left1 = setup("boy_left_1");
+		left2 = setup("boy_left_2");
+		right1 = setup("boy_right_1");
+		right2 = setup("boy_right_2");
+		
+		
+	}
+	public BufferedImage setup(String imageName) {
+		UtilityTool uTool = new UtilityTool();
+		BufferedImage image = null;
+		
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-		} catch (IOException e) {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/"+imageName+".png"));
+			image = uTool.scaledImage(image, gp.tileSize, gp.tileSize);
+		}catch(IOException e){
 			e.printStackTrace();
 		}
+		return image;
 	}
 	public void update() {
 		//this if is what chagnges the player character from walking animation to standing 
@@ -140,47 +155,7 @@ public class Player extends Entity {
 	public void pickUpObject(int i) {
 
 	    if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
-	        String objectName = gp.obj[i].name;
-
-	        switch(objectName) {
-	            case "Key":
-	            	gp.playSE(1); //this calls playSE from gp and sets it to the key effect
-	                hasKey++;
-	                gp.obj[i] = null; // Remove the object after using its name
-	                gp.ui.showMessage("You have picked up a key!");
-	                
-	               
-	                
-	                // System.out.println("Key: " + hasKey);
-	                break;
-
-	            case "Door":
-	                if(hasKey > 0) {
-	                	gp.playSE(3); //this calls playSE from gp and sets it to the door effect
-	                    gp.obj[i] = null; // Remove the door
-	                    hasKey--; // Reduce the number of keys
-	                    gp.ui.showMessage("You opened a door!");
-	                }
-	                else {
-	                	gp.ui.showMessage("You need a key to open the door");
-	                }
-	                //System.out.println("Key: " + hasKey);
-	                break;
-	            case "Boots": //makes the player faster
-	            	gp.playSE(2); //this calls playSE from gp and sets it to the powerUP effect
-	            	speed += 2;
-	            	gp.obj[i] = null;
-	            	gp.ui.showMessage("Speed Up!");
-	            	
-	            
-	            	break;
-	            case "Chest":
-	            	gp.ui.gameFinished =true;
-	            	gp.stopMusic();
-	            	gp.playSE(4);
-	            	
-	                break;
-        	   }
+	       
 	    }
 	}
 
@@ -228,7 +203,55 @@ public class Player extends Entity {
 			}
 			break;			
 		}
-		g2.drawImage(image,  screenX,  screenY,  gp.tileSize, gp.tileSize, null); 
+		g2.drawImage(image,  screenX,  screenY, null); 
 		//image oobserver is the null val. the other stuff draws that image with the size gp
 	}
 }
+
+
+
+
+
+/*
+ *  String objectName = gp.obj[i].name;
+
+	        switch(objectName) {
+	            case "Key":
+	            	gp.playSE(1); //this calls playSE from gp and sets it to the key effect
+	                hasKey++;
+	                gp.obj[i] = null; // Remove the object after using its name
+	                gp.ui.showMessage("You have picked up a key!");
+	                
+	               
+	                
+	                // System.out.println("Key: " + hasKey);
+	                break;
+
+	            case "Door":
+	                if(hasKey > 0) {
+	                	gp.playSE(3); //this calls playSE from gp and sets it to the door effect
+	                    gp.obj[i] = null; // Remove the door
+	                    hasKey--; // Reduce the number of keys
+	                    gp.ui.showMessage("You opened a door!");
+	                }
+	                else {
+	                	gp.ui.showMessage("You need a key to open the door");
+	                }
+	                //System.out.println("Key: " + hasKey);
+	                break;
+	            case "Boots": //makes the player faster
+	            	gp.playSE(2); //this calls playSE from gp and sets it to the powerUP effect
+	            	speed += 2;
+	            	gp.obj[i] = null;
+	            	gp.ui.showMessage("Speed Up!");
+	            	
+	            
+	            	break;
+	            case "Chest":
+	            	gp.ui.gameFinished =true;
+	            	gp.stopMusic();
+	            	gp.playSE(4);
+	            	
+	                break;
+        	   }
+ */

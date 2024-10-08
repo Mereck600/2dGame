@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	//SYSTEM
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler();	
+	KeyHandler keyH = new KeyHandler(this);	
 	Sound music = new Sound(); //overall game music
 	Sound se = new Sound(); //Sound effects for the game
 	public CollisionChecker cChecker = new CollisionChecker(this);
@@ -49,6 +49,10 @@ public class GamePanel extends JPanel implements Runnable{
 	public Player player = new Player(this,keyH);
 	public SuperObject obj[] = new SuperObject[10]; //ten slots for object and can be replaced in the game but only 10 displayed
 	
+	//Game State
+	public int gameState;
+	public final int playState=1;
+	public final int pauseState = 2;
 	
 	
 	public GamePanel() {
@@ -64,8 +68,8 @@ public class GamePanel extends JPanel implements Runnable{
 		aSetter.setObject();
 		
 		playMusic(0);
-		
-		
+		//stopMusic();	//	Rember you may need to uncomment this ************************************************************
+		gameState = playState;
 	}
 
 /**
@@ -150,7 +154,12 @@ public class GamePanel extends JPanel implements Runnable{
 	 * then the pain component is called and rePaints the player model
 	 */
 	public void update() {
-		player.update();
+		if(gameState == playState) {
+			player.update();
+		}
+		if(gameState == pauseState) {
+			//nothing
+		}
 		
 	}
 	/**
@@ -161,6 +170,14 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);  //super means parent class ie. JPanel 
 		
 		Graphics2D g2 = (Graphics2D)g;//Graphics2D is a class that extends the graphics class to provide control over geo, cords, color, text
+		//debug
+		long drawStart =0;
+		if(keyH.checkDrawTime ==true) {
+			drawStart = System.nanoTime();
+		}
+		
+		
+		
 		
 		//*** DO NOT PUT DRAW ITEMS ABOVE (VERY IMPORTANT)  ****//
 		tileM.draw(g2); // this needs to be before player tiles or any other layer this is base
@@ -178,6 +195,16 @@ public class GamePanel extends JPanel implements Runnable{
 		//ui
 		ui.draw(g2);
 		
+		//more debug
+		
+		if(keyH.checkDrawTime ==true) {
+			
+			long drawEnd = System.nanoTime();
+			long passed = drawEnd - drawStart;
+			g2.setColor(Color.white);
+			g2.drawString("Draw Time: " + passed, 10,400);
+			System.out.println("Draw Time: " + passed);
+		}
 		
 		
 		g2.dispose(); //saves memory while not in use
