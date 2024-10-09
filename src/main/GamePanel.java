@@ -2,7 +2,7 @@ package main;
 
 import javax.swing.JPanel;
 
-
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -48,6 +48,8 @@ public class GamePanel extends JPanel implements Runnable{
 	//Entity and Onjects 
 	public Player player = new Player(this,keyH);
 	public SuperObject obj[] = new SuperObject[10]; //ten slots for object and can be replaced in the game but only 10 displayed
+	public Entity npc[] = new Entity[10];
+	
 	
 	//Game State
 	public int gameState;
@@ -66,7 +68,7 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	public void setUpGame() {
 		aSetter.setObject();
-		
+		aSetter.setNPC();
 		playMusic(0);
 		//stopMusic();	//	Rember you may need to uncomment this ************************************************************
 		gameState = playState;
@@ -155,7 +157,14 @@ public class GamePanel extends JPanel implements Runnable{
 	 */
 	public void update() {
 		if(gameState == playState) {
+			//player
 			player.update();
+			for(int i =0; i<npc.length; i++) {
+				if(npc[i] != null) {
+					npc[i].update();
+				}
+			}
+			
 		}
 		if(gameState == pauseState) {
 			//nothing
@@ -186,6 +195,13 @@ public class GamePanel extends JPanel implements Runnable{
 		for(int i =0; i<obj.length; i++) { //scan array
 			if(obj[i] != null) {  //checks to see if there is an item makes sure to check for null so no error
 				obj[i].draw(g2, this);
+			}
+		}
+		
+		// NPC 
+		for(int i =0; i< npc.length; i++) {
+			if(npc[i] != null) {
+				npc[i].draw(g2); 
 			}
 		}
 		

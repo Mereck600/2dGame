@@ -16,14 +16,15 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
 
-	GamePanel gp;
+	
 	KeyHandler keyH;
 	public final int screenX;   //the background scrolls as the player moves 
 	public final int screenY;  //these dont change
 	//public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
 	int standCounter =1;
 	public Player(GamePanel gp, KeyHandler keyH) {
-		this.gp = gp;
+		super(gp);
+		
 		this.keyH = keyH;
 
 		screenX =gp.screenWidth/2 -(gp.tileSize/2); //returns halfway point of the screen
@@ -53,29 +54,18 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 		//similar to tile we are scaling the image outside of the main draw method to fix the rendering time
 		//only passing the name into the setup though because not indexing the player images
-		up1 = setup("boy_up_1");
-		up2 = setup("boy_up_2");
-		down1 = setup("boy_down_1");
-		down2 = setup("boy_down_2");
-		left1 = setup("boy_left_1");
-		left2 = setup("boy_left_2");
-		right1 = setup("boy_right_1");
-		right2 = setup("boy_right_2");
+		up1 = setup("/player/boy_up_1");
+		up2 = setup("/player/boy_up_2");
+		down1 = setup("/player/boy_down_1");
+		down2 = setup("/player/boy_down_2");
+		left1 = setup("/player/boy_left_1");
+		left2 = setup("/player/boy_left_2");
+		right1 = setup("/player/boy_right_1");
+		right2 = setup("/player/boy_right_2");
 		
 		
 	}
-	public BufferedImage setup(String imageName) {
-		UtilityTool uTool = new UtilityTool();
-		BufferedImage image = null;
-		
-		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/"+imageName+".png"));
-			image = uTool.scaledImage(image, gp.tileSize, gp.tileSize);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		return image;
-	}
+	
 	public void update() {
 		//this if is what chagnges the player character from walking animation to standing 
 		if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
@@ -105,6 +95,11 @@ public class Player extends Entity {
 			//check Object collision
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
+			
+			//NPC Collision
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			interactNPC(npcIndex);
+			
 			//update gets called 60x per sec so every frame this below is
 			//called and when it hits 12 the player image will change
 			//if colliosion is false playe can move
@@ -156,6 +151,12 @@ public class Player extends Entity {
 
 	    if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
 	       
+	    }
+	}
+	
+	public void interactNPC(int i) {
+		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
+		       System.out.println("You hit npc");
 	    }
 	}
 
