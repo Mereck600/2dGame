@@ -10,6 +10,9 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener{
 //these 2 overrides needed for this to work 
 	GamePanel gp;
+	
+	int directionPressed;
+	
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
 	//debug
 	public boolean checkDrawTime;
@@ -24,44 +27,60 @@ public class KeyHandler implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode(); // returns the integer keyCode associated witht he key in this event
-		
-		if(code == KeyEvent.VK_W) { //user presses w key
-			upPressed = true;
-			
-		}
-		if(code == KeyEvent.VK_S) { //user presses w key
-			downPressed = true;
-
-		}
-		if(code == KeyEvent.VK_A) { //user presses w key
-			leftPressed = true;
-
-		}
-		if(code == KeyEvent.VK_D) { //user presses w key
-			rightPressed = true;
-
-		}
-		if(code == KeyEvent.VK_P) { //user presses w key
-			if(gp.gameState == gp.playState) {
-				gp.gameState = gp.pauseState;
-			}
-			else if (gp.gameState == gp.pauseState) {
-				gp.gameState = gp.playState;
-			}
-
-		}
-		
-		//debug 
-		if(code == KeyEvent.VK_T) { //user presses w key
-			if(checkDrawTime == false) {
-				checkDrawTime = true; 
+		//play state
+		if(gp.gameState == gp.playState){
+			if(code == KeyEvent.VK_W) { //user presses w key
+				//directionPressed = Direction.UP;
+				upPressed = true;
 				
 			}
-			else if(checkDrawTime == true) {
-				checkDrawTime = false;
+			if(code == KeyEvent.VK_S) { //user presses w key
+				downPressed = true;
+
+			}
+			if(code == KeyEvent.VK_A) { //user presses w key
+				leftPressed = true;
+
+			}
+			if(code == KeyEvent.VK_D) { //user presses w key
+				rightPressed = true;
+
+			}
+			if(code == KeyEvent.VK_P) { //user presses w key
+				gp.gameState = gp.pauseState;
+				
+
 			}
 			
+			//debug 
+			if(code == KeyEvent.VK_T) { //user presses w key
+				if(checkDrawTime == false) {
+					checkDrawTime = true; 
+					
+				}
+				else if(checkDrawTime == true) {
+					checkDrawTime = false;
+				}
+				
+			}
 		}
+		//pause state
+		else if(gp.gameState == gp.pauseState) {
+			if(code == KeyEvent.VK_P) { //user presses w key
+				gp.gameState = gp.playState;
+				
+
+			}
+		}
+		
+		//dialouge state
+		else if(gp.gameState == gp.dialogueState) {
+			if( code == KeyEvent.VK_ENTER) {
+				gp.gameState = gp.playState;
+				
+			}
+		}
+		
 		
 		
 		
@@ -71,6 +90,7 @@ public class KeyHandler implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_W) { //user presses w key
+			directionPressed = Direction.STILL;
 			upPressed = false;
 			
 		}

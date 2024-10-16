@@ -21,10 +21,14 @@ import java.awt.Rectangle;
 public class Entity {
 	GamePanel gp;
 	public int worldX, worldY; //world x and y 
+	
+	// Posn worldCtr;
+	// Posn[] dirs = new Posn[] { new Posn(0, 0), new Posn(0, -1), new Posn(0 1), new Posn(-1, 0), new Posn(1, 0) };
+	
 	public int speed;
 	
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;//describes an image with an accessible buffer of image data. (used to store img)
-	public String direction;
+	public String direction;    // make this an int --- to correspond to Direction values
 	
 	public int spriteCounter =0;
 	public int spriteNum =1;
@@ -33,6 +37,8 @@ public class Entity {
 	
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
+	String dialouges[] = new String[20];
+	int dialougeIndex = 0;
 	
 	
 	public Entity (GamePanel gp) {
@@ -40,6 +46,7 @@ public class Entity {
 	}
 	
 	public void setAction() {}
+	public void speak() {}
 	public void update() {
 		
 		setAction(); //subclass takes priority
@@ -91,6 +98,9 @@ public class Entity {
 				worldX  - gp.tileSize< gp.player.worldX + gp.player.screenX &&
 				worldY + gp.tileSize> gp.player.worldY - gp.player.screenY &&
 				worldY - gp.tileSize< gp.player.worldY +gp.player.screenY) {
+			
+			// image = imageArray[ spriteNum ] [direction]
+			//image arr in the npc and in player 
 			
 			switch(direction) {
 			case "up":

@@ -14,6 +14,8 @@ import main.UtilityTool;
 
 import java.awt.image.BufferedImage;
 
+
+
 public class Player extends Entity {
 
 	
@@ -85,7 +87,7 @@ public class Player extends Entity {
 
 			}
 			else if(keyH.rightPressed == true) {
-				direction = "right";
+				direction = "right";	
 
 			}
 			//check tile collision
@@ -104,6 +106,10 @@ public class Player extends Entity {
 			//called and when it hits 12 the player image will change
 			//if colliosion is false playe can move
 			if(collisionOn == false) {
+				
+			//	worldCtr = worldCtr.translate( dirs[direction].scale(speed) );
+				
+				
 				switch(direction) {
 				case"up":
 					worldY -= speed; //in java the uppeer left is 0,0 and x increase to right and y+ as go down
@@ -156,7 +162,8 @@ public class Player extends Entity {
 	
 	public void interactNPC(int i) {
 		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
-		       System.out.println("You hit npc");
+		      gp.gameState = gp.dialogueState;
+		      gp.npc[i].speak();
 	    }
 	}
 
