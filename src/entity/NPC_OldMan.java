@@ -35,8 +35,8 @@ public class NPC_OldMan extends Entity{
 	
 	public void setDialouge() {
 		dialouges[0] = "Hello, lad.";
-		dialouges[1] = "So You've come to this island to find the treasure?";
-		dialouges[2] = "I used to be a Great wizard... but now i'm a bit too old";
+		dialouges[1] = "So You've come to this island \n to find the treasure?";
+		dialouges[2] = "I used to be a Great wizard... \n but now i'm a bit too old";
 		dialouges[3] = "Gods I was strong then.";
 		
 		
@@ -74,27 +74,8 @@ public class NPC_OldMan extends Entity{
 	}
 	
 	public void speak() {
-		
-		if(dialouges[dialougeIndex]==null) {
-			dialougeIndex =0;
-		}
-		gp.ui.currentDialouge = dialouges[dialougeIndex];
-		dialougeIndex++;
-		
-		switch(gp.player.direction) {
-		case "up":
-			direction = "down";
-			break;
-		case "down":
-			direction = "up";
-			break;
-		case "left":
-			direction = "right";
-			break;
-		case "right":
-			direction = "left";
-			break;
-		}
+		//character specific speech
+		super.speak();
 		
 	}
 

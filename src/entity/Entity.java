@@ -40,13 +40,42 @@ public class Entity {
 	String dialouges[] = new String[20];
 	int dialougeIndex = 0;
 	
+	//Character status
+	public int maxLife;  //shared by all entites
+	public int life;
+	
+	
 	
 	public Entity (GamePanel gp) {
 		this.gp = gp;
 	}
 	
 	public void setAction() {}
-	public void speak() {}
+	//Method for allowing npcs to speak
+	//moved it from the npc so you simply need to make sure npcs are extending entity
+	public void speak() {
+		if(dialouges[dialougeIndex]==null) {
+			dialougeIndex =0;
+		}
+		gp.ui.currentDialouge = dialouges[dialougeIndex];
+		dialougeIndex++;
+		
+		switch(gp.player.direction) {
+		case "up":
+			direction = "down";
+			break;
+		case "down":
+			direction = "up";
+			break;
+		case "left":
+			direction = "right";
+			break;
+		case "right":
+			direction = "left";
+			break;
+		}
+		
+	}
 	public void update() {
 		
 		setAction(); //subclass takes priority
