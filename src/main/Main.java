@@ -11,7 +11,7 @@ public class Main {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
-		window.setTitle("2d Adventure"); //adds the title to the game 
+		window.setTitle("Legends of Aetheria"); //adds the title to the game window
 		
 		GamePanel gamePanel = new GamePanel();
 		window.add(gamePanel);

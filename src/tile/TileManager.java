@@ -32,7 +32,7 @@ public class TileManager {
 		tile = new Tile[50]; // this means im creating 10 kinds of tiles ie grass water wall can be changed 
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow]; //this is the array that reads .txt file 
 		getTileImage();
-		loadMap("/maps/worldV2.txt");
+		loadMap("/maps/woldMapWithDamage.txt");
 		
 	}
 	

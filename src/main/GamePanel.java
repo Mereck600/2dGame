@@ -37,12 +37,13 @@ public class GamePanel extends JPanel implements Runnable{
 	int FPS = 60;
 	//SYSTEM
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler(this);	
+	public KeyHandler keyH = new KeyHandler(this);	
 	Sound music = new Sound(); //overall game music
 	Sound se = new Sound(); //Sound effects for the game
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
+	public EventHandler eHandler = new EventHandler(this); //starts the event handler
 	Thread gameThread; //This is the clock set up once started it will run until stopped kinda like a loop
 	
 	//Entity and Onjects 
@@ -53,9 +54,14 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Game State
 	public int gameState;
+	public final int titleState = 0;
 	public final int playState=1;
 	public final int pauseState = 2;
 	public final int dialogueState =3;
+	
+	
+	
+	//another stare for chaning locations
 	
 	
 	public GamePanel() {
@@ -70,9 +76,9 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setUpGame() {
 		aSetter.setObject();
 		aSetter.setNPC();
-		playMusic(0);
+		//playMusic(0);
 		//stopMusic();	//	Rember you may need to uncomment this ************************************************************
-		gameState = playState;
+		gameState = titleState;
 	}
 
 /**
@@ -186,31 +192,40 @@ public class GamePanel extends JPanel implements Runnable{
 			drawStart = System.nanoTime();
 		}
 		
+		//Ttile Screen
 		
-		
-		
-		//*** DO NOT PUT DRAW ITEMS ABOVE (VERY IMPORTANT)  ****//
-		tileM.draw(g2); // this needs to be before player tiles or any other layer this is base
-		
-		//object
-		for(int i =0; i<obj.length; i++) { //scan array
-			if(obj[i] != null) {  //checks to see if there is an item makes sure to check for null so no error
-				obj[i].draw(g2, this);
+		if(gameState == titleState) {
+			ui.draw(g2);
+		}
+		//(add more)
+		else {
+			//*** DO NOT PUT DRAW ITEMS ABOVE (VERY IMPORTANT)  ****//
+			tileM.draw(g2); // this needs to be before player tiles or any other layer this is base
+			
+			//object
+			for(int i =0; i<obj.length; i++) { //scan array
+				if(obj[i] != null) {  //checks to see if there is an item makes sure to check for null so no error
+					obj[i].draw(g2, this);
+				}
 			}
+			
+			// NPC 
+			for(int i =0; i< npc.length; i++) {
+				if(npc[i] != null) {
+					npc[i].draw(g2); 
+				}
+			}
+			
+			//Player
+			player.draw(g2);
+			
+			//ui
+			ui.draw(g2);
 		}
 		
-		// NPC 
-		for(int i =0; i< npc.length; i++) {
-			if(npc[i] != null) {
-				npc[i].draw(g2); 
-			}
-		}
 		
-		//Player
-		player.draw(g2);
 		
-		//ui
-		ui.draw(g2);
+		
 		
 		//more debug
 		

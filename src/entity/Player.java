@@ -51,6 +51,10 @@ public class Player extends Entity {
 		worldY = gp.tileSize *21; 
 		speed = 4; 
 		direction = "down"; 
+		
+		//player status
+		maxLife = 6;  //means 3 heart 2lives is one heart
+		life = maxLife;
 	}
 	//gets the pictues needed for the player model. 
 	public void getPlayerImage() {
@@ -101,6 +105,10 @@ public class Player extends Entity {
 			//NPC Collision
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
+			
+			//Check Event
+			gp.eHandler.checkEvent();
+			gp.keyH.enterPressed =false;
 			
 			//update gets called 60x per sec so every frame this below is
 			//called and when it hits 12 the player image will change
@@ -162,9 +170,13 @@ public class Player extends Entity {
 	
 	public void interactNPC(int i) {
 		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
-		      gp.gameState = gp.dialogueState;
-		      gp.npc[i].speak();
+				
+			if(gp.keyH.enterPressed == true) { //talk to npc
+				 gp.gameState = gp.dialogueState;
+			      gp.npc[i].speak();
+			}
 	    }
+		//gp.keyH.enterPressed =false;     currently this is giving bugs in my eventHandler class because it auto sets to false
 	}
 
 	public void draw(Graphics2D g2) {
