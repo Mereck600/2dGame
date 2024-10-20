@@ -2,15 +2,19 @@ package main;
 
 import javax.swing.JPanel;
 
+
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
+//import object.SuperObject;
 import tile.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GamePanel extends JPanel implements Runnable{
 	/**
@@ -48,8 +52,10 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Entity and Onjects 
 	public Player player = new Player(this,keyH);
-	public SuperObject obj[] = new SuperObject[10]; //ten slots for object and can be replaced in the game but only 10 displayed
+	public Entity obj[] = new Entity[10]; //ten slots for object and can be replaced in the game but only 10 displayed
 	public Entity npc[] = new Entity[10];
+	ArrayList<Entity> entityList = new ArrayList<>(); //handles entity drawing order by worldY lowest is at 0 and highest is at end of array drawn
+	
 	
 	
 	//Game State
@@ -202,22 +208,40 @@ public class GamePanel extends JPanel implements Runnable{
 			//*** DO NOT PUT DRAW ITEMS ABOVE (VERY IMPORTANT)  ****//
 			tileM.draw(g2); // this needs to be before player tiles or any other layer this is base
 			
-			//object
-			for(int i =0; i<obj.length; i++) { //scan array
-				if(obj[i] != null) {  //checks to see if there is an item makes sure to check for null so no error
-					obj[i].draw(g2, this);
-				}
-			}
+			entityList.add(player);
 			
-			// NPC 
-			for(int i =0; i< npc.length; i++) {
+			for(int i=0; i<npc.length; i++) {
 				if(npc[i] != null) {
-					npc[i].draw(g2); 
+					entityList.add(npc[i]);
+					
 				}
 			}
+			for(int i =0; i<obj.length; i++) {
+				if(obj[i] != null) {
+					entityList.add(obj[i]);
+				}
+			}
+			//sort
+			Collections.sort(entityList, new Comparator<Entity>() {
+				
+				public int compare(Entity e1, Entity e2) {
+					int result = Integer.compare(e1.worldY,  e2.worldY);
+					return result;
+				}
+			});
 			
-			//Player
-			player.draw(g2);
+			//draw entities
+			for(int i =0; i < entityList.size(); i++) {
+				entityList.get(i).draw(g2);
+				
+			}
+			//Empty Entity list
+			for(int i =0; i < entityList.size(); i++) {
+				entityList.remove(i);
+				
+			}
+			
+			
 			
 			//ui
 			ui.draw(g2);
