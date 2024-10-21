@@ -1,4 +1,4 @@
-# 2dGame
+# Legends Of Atheria
 ## CSC 121 final project using Jframe
 
 ### To run:
