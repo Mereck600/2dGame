@@ -6,9 +6,9 @@ Ensure you have the main package selected and press the run button in order to r
 To run the tile editor, select the tileEditor package and select the run Button.
 
 ### Latest Features:
--Revisied NPC and Object generation.
--Events: Now when a player steps on certain tiles or presses the enter key on these tiles an in-game event will occur. (NPC dialouge, Damage, Teleportation)
--New title screen with player selection (Not fully implemented)
+* Revisied NPC and Object generation.
+* Events: Now when a player steps on certain tiles or presses the enter key on these tiles an in-game event will occur. (NPC dialouge, Damage, Teleportation)
+* New title screen with player selection (Not fully implemented)
 
 
 Tiles should be added to the res folder and then should be added to the TileManager -> getTileImage array and add settings to the tile depending on what it is. 
