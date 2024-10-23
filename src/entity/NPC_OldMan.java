@@ -38,6 +38,7 @@ public class NPC_OldMan extends Entity{
 		dialouges[1] = "So You've come to this island \n to find the treasure?";
 		dialouges[2] = "I used to be a Great wizard... \n but now i'm a bit too old";
 		dialouges[3] = "Gods I was strong then.";
+		dialouges[4] = "If you are hurt walk up the path \n and press enter on the water";
 		
 		
 		
