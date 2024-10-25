@@ -22,13 +22,17 @@ public class AssetSetter {
 	 * instanciate default objects and place them on map using object arry from game pannel
 	 */
 	public void setObject() {
-		gp.obj[0] = new OBJ_Door(gp); //first door
-		gp.obj[0].worldX = 21 *gp.tileSize;
-		gp.obj[0].worldY = 22  *gp.tileSize;
 		
-		gp.obj[1] = new OBJ_Door(gp); //first door
-		gp.obj[1].worldX = 23 *gp.tileSize;
-		gp.obj[1].worldY = 25  *gp.tileSize;
+		
+		gp.obj[0] = new OBJ_Door(gp); //first door
+		gp.obj[0].worldX = 23 *gp.tileSize;
+		gp.obj[0].worldY = 25  *gp.tileSize;
+		
+		gp.obj[1] = new OBJ_Door(gp); //real door
+		gp.obj[1].worldX = 10 *gp.tileSize;
+		gp.obj[1].worldY = 12  *gp.tileSize;
+		
+		
 		
 				
 		
