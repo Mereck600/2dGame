@@ -10,6 +10,16 @@ public class Enemy extends Entity{
 		speed = 1;
 		getImage();
 		setDialouge() ;
+		takeDamage(); 
+		dealDamage();
+	}
+	private void dealDamage() {
+		//When player is near enough for the enemy to swing it will attack and deal damage
+		
+	}
+	private void takeDamage() {
+		// when the player hits the enemy it will deal damage to the enemy taking away some of its health
+		
 	}
 	public void setDialouge() {
 		dialouges[0] = "hrrgh.";
@@ -23,14 +33,15 @@ public class Enemy extends Entity{
 	
 	public void getImage() {
 		//I will switch this to the enemy pixel art once I get that made.
-		up1 = setup("/npc/oldman_up_1");
-		up2 = setup("/npc/oldman_up_2");
-		down1 = setup("/npc/oldman_down_1");
-		down2 = setup("/npc/oldman_down_2");
-		left1 = setup("/npc/oldman_left_1");
-		left2 = setup("/npc/oldman_left_2");
-		right1 = setup("/npc/oldman_right_1");
-		right2 = setup("/npc/oldman_right_2");
+		up1 = setup("/enemy/goblin_up1");
+		up2 = setup("/enemy/goblin_up2");
+		down1 = setup("/enemy/goblin_down1");
+		down2 = setup("/enemy/goblin_down2");
+		left1 = setup("/enemy/goblin_left1");
+		left2 = setup("/enemy/goblin_left2");
+		right1 = setup("/enemy/goblin_right1");
+		right2 = setup("/enemy/goblin_right2");
 }
+	
 }
 
