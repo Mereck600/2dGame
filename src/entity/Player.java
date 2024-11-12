@@ -1,7 +1,8 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
-
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -106,6 +107,11 @@ public class Player extends Entity {
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
 			
+			//Check Monster collision
+			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+			contactMonster(monsterIndex);
+			
+			
 			//Check Event
 			gp.eHandler.checkEvent();
 			gp.keyH.enterPressed =false;
@@ -154,6 +160,15 @@ public class Player extends Entity {
 			}
 			
 		}
+		
+		//this needs to be outside of key if statement
+		if(invincible == true) {
+			invincibleCounter++;
+			if(invincibleCounter > 60) {
+				invincible =false;
+				invincibleCounter =0;
+			}
+		}
 
 
 	}
@@ -178,6 +193,18 @@ public class Player extends Entity {
 	    }
 		//gp.keyH.enterPressed =false;     currently this is giving bugs in my eventHandler class because it auto sets to false
 	}
+	
+	public void contactMonster(int i ) {
+		if(i != 999) {//player touches monster
+			if(invincible == false) {
+				life -= 1;
+				invincible =true;
+			}
+			
+		}
+		
+	}
+	
 
 	public void draw(Graphics2D g2) {
 		//test object :
@@ -223,8 +250,22 @@ public class Player extends Entity {
 			}
 			break;			
 		}
+		
+		if(invincible == true) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.3f));  //seting the opacity level of the draw method so that it is 70% 
+		}
 		g2.drawImage(image,  screenX,  screenY, null); 
+		
+		//reset alpha
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f)); 
+		
 		//image oobserver is the null val. the other stuff draws that image with the size gp
+		
+		//DEbug 	
+//		g2.setFont(new Font("Arial", Font.PLAIN,26));
+//		g2.setColor(Color.white);
+//		g2.drawString("Invincible: " +invincibleCounter,10,400);
+		
 	}
 }
 

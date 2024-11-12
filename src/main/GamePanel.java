@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public Player player = new Player(this,keyH);
 	public Entity obj[] = new Entity[10]; //ten slots for object and can be replaced in the game but only 10 displayed
 	public Entity npc[] = new Entity[10];
+	public Entity monster[] = new Entity[20]; // number of monsters we can display
 	ArrayList<Entity> entityList = new ArrayList<>(); //handles entity drawing order by worldY lowest is at 0 and highest is at end of array drawn
 	
 	
@@ -82,6 +83,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void setUpGame() {
 		aSetter.setObject();
 		aSetter.setNPC();
+		aSetter.setMonster(); //calls the entities we want
 		//playMusic(0);
 		//stopMusic();	//	Rember you may need to uncomment this ************************************************************
 		gameState = titleState;
@@ -177,6 +179,11 @@ public class GamePanel extends JPanel implements Runnable{
 					npc[i].update();
 				}
 			}
+			for(int i = 0; i < monster.length; i++) {
+				if(monster[i] != null) {
+					monster[i].update();
+				}
+			}
 			
 		}
 		if(gameState == pauseState) {
@@ -221,6 +228,13 @@ public class GamePanel extends JPanel implements Runnable{
 					entityList.add(obj[i]);
 				}
 			}
+			for(int i =0; i<monster.length; i++) {
+				if(monster[i] != null) {
+					entityList.add(monster[i]);
+				}
+			}
+			
+			
 			//sort
 			Collections.sort(entityList, new Comparator<Entity>() {
 				
@@ -236,11 +250,7 @@ public class GamePanel extends JPanel implements Runnable{
 				
 			}
 			//Empty Entity list
-			for(int i =0; i < entityList.size(); i++) {
-				entityList.remove(i);
-				
-			}
-			
+			entityList.clear();
 			
 			
 			//ui
