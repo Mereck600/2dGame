@@ -7,19 +7,24 @@ public class Enemy extends Entity{
 	public Enemy(GamePanel gp) {
 		super(gp);
 		direction = "down";
-		speed = 1;
+		speed = 1; 
+		int health = 2; 
 		getImage();
 		setDialouge() ;
 		takeDamage(); 
 		dealDamage();
+		
 	}
 	private void dealDamage() {
-		//When player is near enough for the enemy to swing it will attack and deal damage
+		PlayerTakeDamage(1);
+		
 		
 	}
-	private void takeDamage() {
-		// when the player hits the enemy it will deal damage to the enemy taking away some of its health
-		
+	private void takeDamage(int i) {
+		if (i = 1) {
+			int health = health -1; 
+		}
+		return health;
 	}
 	public void setDialouge() {
 		dialouges[0] = "hrrgh.";

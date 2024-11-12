@@ -24,6 +24,7 @@ public class Player extends Entity {
 	public final int screenY;  //these dont change
 	//public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
 	int standCounter =1;
+	int playerHealth = 3; 
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
 		
@@ -43,7 +44,15 @@ public class Player extends Entity {
 
 		setDefaultValues();
 		getPlayerImage();
+		PlayerTakeDamage();
 
+	}
+	private void PlayerTakeDamage() {
+		// this is a method for when the player takes damage
+		if (i == 1) {
+			int PlayerHealth= PlayerHealth - 1; 
+		}
+		
 	}
 	//sets the default values of the player
 	public void setDefaultValues() {
