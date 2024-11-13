@@ -9,6 +9,7 @@ public class Enemy extends Entity{
 		direction = "down";
 		speed = 1; 
 		int health = 2; 
+		int damage = 1; 
 		getImage();
 		setDialouge() ;
 		takeDamage(); 
@@ -16,12 +17,12 @@ public class Enemy extends Entity{
 		
 	}
 	private void dealDamage() {
-		PlayerTakeDamage(1);
+		PlayerTakeDamage(damage);
 		
 		
 	}
 	private void takeDamage(int i) {
-		if (i = 1) {
+		if (PlayerDamage = 1) {
 			int health = health -1; 
 		}
 		return health;
