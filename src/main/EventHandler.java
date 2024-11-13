@@ -100,6 +100,7 @@ public class EventHandler {
 	
 	public void damagePit(int col, int row,int gameState) {
 		gp.gameState = gameState;
+		gp.playSE(6);
 		gp.ui.currentDialouge = "You have fallen into a pit";
 		gp.player.life -=1;
 		
@@ -107,12 +108,17 @@ public class EventHandler {
 		canTouchEvent = false;
 		
 	}
-	
+	/*
+	 * Healing will rest health but also rest the monsters on the map
+	 */
 	public void healingPool(int gameState) {
 		if(gp.keyH.enterPressed == true) {
 			gp.gameState = gameState;
+			gp.player.attackCancelled =true;
+			gp.playSE(2);
 			gp.ui.currentDialouge = "You have drank the water. \n You have now healed.";
 			gp.player.life = gp.player.maxLife;
+			gp.aSetter.setMonster(); //reset the monsters 
 								
 		}
 		// gp.keyH.enterPressed = false;   giving errors so i rest in player class

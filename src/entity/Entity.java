@@ -16,6 +16,7 @@ import main.GamePanel;
 import main.UtilityTool;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -26,6 +27,7 @@ public class Entity {
 	// Posn worldCtr;
 	// Posn[] dirs = new Posn[] { new Posn(0, 0), new Posn(0, -1), new Posn(0 1), new Posn(-1, 0), new Posn(1, 0) };
 	
+	// SORT VARIABLES LATER SO IT DOESN'T LOOK LIKE POS
 	public int speed;
 	
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;//describes an image with an accessible buffer of image data. (used to store img)
@@ -50,10 +52,30 @@ public class Entity {
 	public String name;
 	public boolean collision = false;
 	public int type; //The type of the entity 0=player 1=npc 2=monster
+	boolean hpBarOn =false;
+	int hpBarCounter = 0;
+	
 	//Character status
 	public int maxLife;  //shared by all entites
 	public int life;
 	boolean attacking = false;
+	public boolean alive = true;
+	public boolean dying =false;
+	int dyingCounter =0;
+	public int level;
+	public int strength;
+	public int dexterity;
+	public int attack;
+	public int defense;
+	public int exp;
+	public int nextLevelExp;
+	public int coin;
+	public Entity currentWeapon;
+	public Entity currentSheild;
+	
+	//Item atributes
+	public int attackValue;
+	public int defenseValue;
 	
 	
 	
@@ -62,6 +84,7 @@ public class Entity {
 	}
 	
 	public void setAction() {}
+	public void damgaeReaction() {} //override in classes
 	//Method for allowing npcs to speak
 	//moved it from the npc so you simply need to make sure npcs are extending entity
 	public void speak() {
@@ -98,10 +121,18 @@ public class Entity {
 		gp.cChecker.checkEntity(this, gp.monster);
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
 		
-		if(this.type ==2&& contactPlayer==true) {
+		if(this.type ==2 && contactPlayer==true) {
 			if(gp.player.invincible == false) {
 				//we can give damage
-				gp.player.life -=1;
+				gp.playSE(6);
+				
+				int damage = attack -gp.player.defense;
+				if(damage<0 ) {
+					damage = 0;
+				}
+				
+				
+				gp.player.life -=damage;
 				gp.player.invincible= true;
 				
 			}
@@ -180,16 +211,63 @@ public class Entity {
 				break;			
 			}
 			
+			//monster HPBar
+			if(type == 2 && hpBarOn ==true) {
+				double oneScale = (double) gp.tileSize/maxLife;
+				double hpBarValue = oneScale*life;
+				g2.setColor(new Color(35,35,35));
+				g2.fillRect(screenX-1, screenY-15,gp.tileSize+2,12);
+				g2.setColor(new Color(225,0,30));
+				g2.fillRect(screenX,screenY -15,(int)hpBarValue,10); //cast to change to int
+				hpBarCounter++;
+				
+				if(hpBarCounter > 600) { //ten seconds 600 frames
+					hpBarCounter =0;
+					hpBarOn =false;
+				}
+				
+			}
+			 			
+			
+			
+			//stuff when player or monster is hit
 			if(invincible == true) {
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));  //seting the opacity level of the draw method so that it is 70% 
+				hpBarOn =true; 
+				hpBarCounter =0;
+				changeAlpha(g2,0.4f);
+				
+			}
+			if(dying == true) {
+				dyingAnimation(g2);
 			}
 			
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); //tile[ileNum].image is the idex of above func
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));  // reset
+			changeAlpha(g2,1f);  // reset
 		}
 		
 	}
-	
+	public void dyingAnimation(Graphics2D g2) {  //create a blinking death effect by changing the alpha value
+		dyingCounter++;
+		int i =5; //change this if we want to adjust timing
+		
+		if(dyingCounter <= i) {changeAlpha(g2,0);}
+		if(dyingCounter <i && dyingCounter <=i*2) {changeAlpha(g2,1f);}//System.out.println("working 1"); 
+		if(dyingCounter >i*2 && dyingCounter <=i*3) { changeAlpha(g2,0f);} //System.out.println("working 2")
+		if(dyingCounter >i*3 && dyingCounter <=i*4) {changeAlpha(g2,1f);}//System.out.println("working 3");
+		if(dyingCounter >i*4 && dyingCounter <=i*5) {changeAlpha(g2,0f);}//System.out.println("working 4");
+		if(dyingCounter >i*5 && dyingCounter <=i*6) {changeAlpha(g2,1f);}//System.out.println("working 5");
+		if(dyingCounter >i*6 && dyingCounter <=i*7) {changeAlpha(g2,0f);}//System.out.println("working 6");
+		if(dyingCounter >i*7 && dyingCounter <=i*8) {changeAlpha(g2,1f);}//System.out.println("working 7");
+		if(dyingCounter >i*8) {
+			dying =false;
+			alive=false;
+			//System.out.println("working end");
+		}
+		
+	}
+	public void changeAlpha(Graphics2D g2, float alphaValue) {
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,  alphaValue));		
+	}
 	public BufferedImage setup(String imagePath, int width, int height) {
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;
