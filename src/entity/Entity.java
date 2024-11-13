@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.UtilityTool;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -28,12 +29,15 @@ public class Entity {
 	public int speed;
 	
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;//describes an image with an accessible buffer of image data. (used to store img)
+	public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	public String direction = "down";    // make this an int --- to correspond to Direction values
 	
 	public int spriteCounter =0;
 	public int spriteNum =1;
 	public Rectangle solidArea = new Rectangle(0,0, 48,48);  //this will be hit makers
+	public Rectangle attackArea = new Rectangle(0,0, 0,0); //entities attack area and this can depend on attack or weapon will be overridden
 	public int solidAreaDefaultX, solidAreaDefaultY;
+	
 	
 	public boolean collisionOn = false;
 	public int actionLockCounter = 0;
@@ -49,6 +53,7 @@ public class Entity {
 	//Character status
 	public int maxLife;  //shared by all entites
 	public int life;
+	boolean attacking = false;
 	
 	
 	
@@ -131,6 +136,14 @@ public class Entity {
 			}
 			spriteCounter =0;
 		}
+		//this needs to be outside of key if statement
+				if(invincible == true) {
+					invincibleCounter++;
+					if(invincibleCounter > 35) {  // change this if we need to make this shorter for gameplay
+						invincible =false;
+						invincibleCounter =0;
+					}
+				}
 		
 	}
 	
@@ -150,52 +163,40 @@ public class Entity {
 			
 			switch(direction) {
 			case "up":
-				if(spriteNum == 1) {
-					image = up1;
-				}
-				if(spriteNum == 2) {
-					image = up2;
-				}
+				if(spriteNum == 1) {image = up1;}
+				if(spriteNum == 2) {image = up2;}
 				break;
 			case "down":
-				if(spriteNum == 1) {
-					image = down1;
-				}
-				if(spriteNum == 2) {
-					image = down2;
-				}
+				if(spriteNum == 1) {image = down1;}
+				if(spriteNum == 2) {image = down2;}
 				break;
 			case "left":
-				if(spriteNum == 1) {
-					image = left1;
-				}
-				if(spriteNum == 2) {
-					image = left2;
-				}
+				if(spriteNum == 1) {image = left1;}
+				if(spriteNum == 2) {image = left2;}
 				break;
 			case "right":
-				if(spriteNum ==1 ) {
-					image = right1;
-				}
-				if(spriteNum == 2) {
-					image = right2;
-				}
+				if(spriteNum ==1 ) {image = right1;}
+				if(spriteNum == 2) {image = right2;}
 				break;			
 			}
 			
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); //tile[ileNum].image is the idex of above func
+			if(invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));  //seting the opacity level of the draw method so that it is 70% 
+			}
 			
+			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); //tile[ileNum].image is the idex of above func
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));  // reset
 		}
 		
 	}
 	
-	public BufferedImage setup(String imagePath) {
+	public BufferedImage setup(String imagePath, int width, int height) {
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;
 		
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-			image = uTool.scaledImage(image, gp.tileSize, gp.tileSize);
+			image = uTool.scaledImage(image, width, height);
 		}catch(IOException e){
 			e.printStackTrace();
 		}

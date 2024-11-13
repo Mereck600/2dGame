@@ -34,16 +34,22 @@ public class Player extends Entity {
 		screenY =gp.screenHeight/2 - (gp.tileSize/2); 
 		//colision area for the player character 
 		solidArea = new Rectangle(); // x,y,width,height
+		
 		solidArea.x = 8; //this is where it starts 
 		solidArea.y = 16;
 		solidAreaDefaultX = solidArea.x; //we want to record the default values 
 		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32; //this will be smaller than the character
 		solidArea.height = 32;
+		
+		attackArea.width = 36; //temp value to be changed based on the weapon the player has 
+		attackArea.height = 36; //shoter than tile size
+		
 
 
 		setDefaultValues();
 		getPlayerImage();
+		getPlayerAttackImage();
 
 	}
 	//sets the default values of the player
@@ -61,21 +67,39 @@ public class Player extends Entity {
 	public void getPlayerImage() {
 		//similar to tile we are scaling the image outside of the main draw method to fix the rendering time
 		//only passing the name into the setup though because not indexing the player images
-		up1 = setup("/player/boy_up_1");
-		up2 = setup("/player/boy_up_2");
-		down1 = setup("/player/boy_down_1");
-		down2 = setup("/player/boy_down_2");
-		left1 = setup("/player/boy_left_1");
-		left2 = setup("/player/boy_left_2");
-		right1 = setup("/player/boy_right_1");
-		right2 = setup("/player/boy_right_2");
+		up1 = setup("/player/boy_up_1",gp.tileSize,gp.tileSize);
+		up2 = setup("/player/boy_up_2",gp.tileSize,gp.tileSize);
+		down1 = setup("/player/boy_down_1",gp.tileSize,gp.tileSize);
+		down2 = setup("/player/boy_down_2",gp.tileSize,gp.tileSize);
+		left1 = setup("/player/boy_left_1",gp.tileSize,gp.tileSize);
+		left2 = setup("/player/boy_left_2",gp.tileSize,gp.tileSize);
+		right1 = setup("/player/boy_right_1",gp.tileSize,gp.tileSize);
+		right2 = setup("/player/boy_right_2",gp.tileSize,gp.tileSize);
 		
 		
 	}
 	
+	public void getPlayerAttackImage() {
+		attackUp1 = setup("/player/boy_attack_up_1",gp.tileSize, 2*gp.tileSize);
+		attackUp2 = setup("/player/boy_attack_up_2",gp.tileSize, 2*gp.tileSize);
+		attackDown1 = setup("/player/boy_attack_down_1",gp.tileSize,2* gp.tileSize);
+		attackDown2 = setup("/player/boy_attack_down_2",gp.tileSize,2*gp.tileSize);
+		attackLeft1 = setup("/player/boy_attack_left_1",2 *gp.tileSize,gp.tileSize);
+		attackLeft2 = setup("/player/boy_attack_left_2",2* gp.tileSize,gp.tileSize);
+		attackRight1 = setup("/player/boy_attack_right_1",2 * gp.tileSize,gp.tileSize);
+		attackRight2 = setup("/player/boy_attack_right_2",2* gp.tileSize,gp.tileSize);
+		
+	}
+	
 	public void update() {
+		
+		if(attacking == true) {
+			attacking();
+			
+		}
+		
 		//this if is what chagnges the player character from walking animation to standing 
-		if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
+		else if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true || keyH.enterPressed == true) {
 			//all of these ifs handle movement of the character
 			if(keyH.upPressed == true) {
 				direction = "up";
@@ -114,12 +138,11 @@ public class Player extends Entity {
 			
 			//Check Event
 			gp.eHandler.checkEvent();
-			gp.keyH.enterPressed =false;
 			
 			//update gets called 60x per sec so every frame this below is
 			//called and when it hits 12 the player image will change
 			//if colliosion is false playe can move
-			if(collisionOn == false) {
+			if(collisionOn == false && keyH.enterPressed == false) {
 				
 			//	worldCtr = worldCtr.translate( dirs[direction].scale(speed) );
 				
@@ -140,6 +163,9 @@ public class Player extends Entity {
 
 				}
 			}
+			
+			gp.keyH.enterPressed =false;
+
 
 			spriteCounter++;
 			if(spriteCounter > 13) { //possibly make this lower 10toofast 12a little fast 15maybe slow
@@ -176,6 +202,47 @@ public class Player extends Entity {
 	 * this determines what happends after a collision with an object.
 	 * 
 	 */
+	
+	public void attacking() {
+	    spriteCounter++;
+	    if (spriteCounter <= 5) {
+	        spriteNum = 1;
+	    } else if (spriteCounter <= 25) {
+	        spriteNum = 2;
+	        //store x,y and solid area based on the weapon location
+	        //Save the current stuff
+	        int currentWorldX = worldX;
+	        int currentWorldY = worldY;
+	        int solidAreaWidth = solidArea.width;
+	        int solidAreaHeight = solidArea.height;
+	        
+	        //adjust the playeres world x/y for the attack area
+	        switch(direction) {
+	        case "up": worldY -=attackArea.height; break;
+	        case "down": worldY += attackArea.height; break;
+	        case "left": worldX -= attackArea.width; break;
+	        case "right": worldX += attackArea.width; break;
+	        }
+	        //attack area brecomes solid area
+	        solidArea.width = attackArea.width;
+	        solidArea.height = attackArea.height; //cahnge players solid area
+	        //check monster colliosion with new world x and y and solid area
+	        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+	        damageMonster(monsterIndex);
+	        //After checking collision restore original settings
+	        worldX = currentWorldX;
+	        worldY = currentWorldY;
+	        solidArea.width = solidAreaWidth;
+	        solidArea.height = solidAreaHeight;
+	        
+	        
+	        
+	    } else { // Resetting at the end of the animation
+	        spriteNum = 1;
+	        spriteCounter = 0;
+	        attacking = false;
+	    }
+	}
 	public void pickUpObject(int i) {
 
 	    if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
@@ -184,13 +251,16 @@ public class Player extends Entity {
 	}
 	
 	public void interactNPC(int i) {
-		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
-				
-			if(gp.keyH.enterPressed == true) { //talk to npc
+		if(gp.keyH.enterPressed == true) {
+			if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null aka if the player is interacting with npc 
 				 gp.gameState = gp.dialogueState;
-			      gp.npc[i].speak();
-			}
-	    }
+				 gp.npc[i].speak();
+		    }
+			else {
+					attacking =true; 
+		}
+		
+		}
 		//gp.keyH.enterPressed =false;     currently this is giving bugs in my eventHandler class because it auto sets to false
 	}
 	
@@ -205,6 +275,21 @@ public class Player extends Entity {
 		
 	}
 	
+	public void damageMonster(int i) {
+		if(i!= 999) {
+			//System.out.println("hit");
+			if(gp.monster[i].invincible == false) {
+				gp.monster[i].life -=1;
+				gp.monster[i].invincible=true;
+				
+				if(gp.monster[i].life<=0) {  //if monster dies set their index value to null so it is not displayed
+					gp.monster[i]=null;  
+				}
+			}
+		}
+		else {System.out.println("miss");}
+	}
+	
 
 	public void draw(Graphics2D g2) {
 		//test object :
@@ -215,46 +300,58 @@ public class Player extends Entity {
 		//here is the method that draws the player image  should be self explainitory
 		//switch works the same as an if statement for the most part. 
 		BufferedImage image = null;
+		int tempScreenX = screenX;
+		int tempScreenY = screenY;
 
 		switch(direction) {
 		case "up":
-			if(spriteNum == 1) {
-				image = up1;
+			if(attacking == false) {
+				if(spriteNum == 1) {image = up1;}
+				if(spriteNum == 2) {image = up2;}
 			}
-			if(spriteNum == 2) {
-				image = up2;
+			if(attacking ==true) {
+				tempScreenY = screenY -gp.tileSize;
+				if(spriteNum == 1) {image = attackUp1;}
+				if(spriteNum == 2) {image = attackUp2;}
 			}
+			
 			break;
+			
 		case "down":
-			if(spriteNum == 1) {
-				image = down1;
-			}
-			if(spriteNum == 2) {
-				image = down2;
+			if(attacking == false) {
+				if(spriteNum == 1) {image = down1;}
+				if(spriteNum == 2) {image = down2;} }
+			if(attacking ==true) {
+				if(spriteNum == 1) {image = attackDown1;}
+				if(spriteNum == 2) {image = attackDown2;}
 			}
 			break;
 		case "left":
-			if(spriteNum == 1) {
-				image = left1;
-			}
-			if(spriteNum == 2) {
-				image = left2;
+			
+			if(attacking ==false) {
+				if(spriteNum == 1) {image = left1;}
+				if(spriteNum == 2) {image = left2;} }
+			if(attacking ==true) {
+				tempScreenX = screenX -gp.tileSize;
+				if(spriteNum == 1) {image = attackLeft1;}
+				if(spriteNum == 2) {image = attackLeft2;}
 			}
 			break;
 		case "right":
-			if(spriteNum ==1 ) {
-				image = right1;
-			}
-			if(spriteNum == 2) {
-				image = right2;
+			if(attacking == false) {
+				if(spriteNum ==1 ) {image = right1;}
+				if(spriteNum == 2) {image = right2;} }
+			if(attacking ==true) {
+				if(spriteNum == 1) {image = attackRight1;}
+				if(spriteNum == 2) {image = attackRight2;}
 			}
 			break;			
 		}
 		
 		if(invincible == true) {
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.3f));  //seting the opacity level of the draw method so that it is 70% 
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));  //seting the opacity level of the draw method so that it is 70% 
 		}
-		g2.drawImage(image,  screenX,  screenY, null); 
+		g2.drawImage(image,  tempScreenX,  tempScreenY, null); 
 		
 		//reset alpha
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f)); 

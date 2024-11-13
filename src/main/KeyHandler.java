@@ -121,31 +121,26 @@ public class KeyHandler implements KeyListener{
 						}
 
 					}
-					if(code == KeyEvent.VK_ENTER) {
-						if(gp.ui.commandNum == 0) { //Selects the new game and starts the game and music
-							System.out.println("do something related to character");
-							gp.gameState = gp.playState; //or change the title state to like an instruction state
-							
-							gp.playMusic(0);
-							
-						}
-						if(gp.ui.commandNum == 1) {
-							System.out.println("do something related to character");}//add later
-							gp.gameState = gp.playState; //or change the title state to like an instruction state
-						
-							gp.playMusic(0);
-						
-						if(gp.ui.commandNum == 2) {
-							System.out.println("do something related to character");
-							gp.gameState = gp.playState; //or change the title state to like an instruction state
-							
-							gp.playMusic(0);
-						}
-						if(gp.ui.commandNum == 3) {
-							gp.ui.titleScreenState =0;
-						}
-						
+					if (code == KeyEvent.VK_ENTER) {
+					    if (gp.ui.commandNum == 0) { 
+					        System.out.println("do something related to Wiz");
+					        gp.gameState = gp.playState;
+					        gp.playMusic(0);
+					    } else if (gp.ui.commandNum == 1) { 
+					        System.out.println("do something related to Thief");
+					        gp.gameState = gp.playState;
+					        gp.playMusic(0);
+					    } else if (gp.ui.commandNum == 2) { 
+					        System.out.println("do something related to Dude");
+					        gp.gameState = gp.playState;
+					        gp.playMusic(0);
+					    } else if (gp.ui.commandNum == 3) { 
+					        // Set this to go back to the previous menu or title state
+					        gp.ui.titleScreenState = 0;
+					        System.out.println("Going back to the previous menu");
+					    }
 					}
+
 				}
 			
 			
@@ -156,7 +151,7 @@ public class KeyHandler implements KeyListener{
 		//}
 		
 		//play state
-		if(gp.gameState == gp.playState){
+		else if(gp.gameState == gp.playState){
 			if(code == KeyEvent.VK_W) { //user presses w key
 				//directionPressed = Direction.UP;
 				upPressed = true;
