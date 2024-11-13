@@ -18,17 +18,17 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
 
-	
+
 	KeyHandler keyH;
 	public final int screenX;   //the background scrolls as the player moves 
 	public final int screenY;  //these dont change
 	//public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
 	int standCounter =1;
-	int playerHealth = 3; 
-	int playerDamage = 1; 
+	int playerHealth = 3;
+	int playerDamage = 1;
 	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
-		
+
 		this.keyH = keyH;
 
 		screenX =gp.screenWidth/2 -(gp.tileSize/2); //returns halfway point of the screen
@@ -45,28 +45,33 @@ public class Player extends Entity {
 
 		setDefaultValues();
 		getPlayerImage();
-		PlayerTakeDamage();
-		playerDealDamage();
+		playerDealDamage(null);
+		PlayerTakeDamage(playerDamage);
 
 	}
-	private void playerDealDamage() {
-		takeDamage(1);
-		
+	private void playerDealDamage(Enemy enemy) {
+		enemy.takeDamage(1);
+
 	}
-	private void PlayerTakeDamage() {
-		// this is a method for when the player takes damage
-		if (i == 1) {
-			int PlayerHealth= PlayerHealth - 1; 
+	public void PlayerTakeDamage(int damage) {
+		life -= damage;  // Subtract damage from player's health
+		if (life <= 0) {
+			die();  // Handle player death if health reaches 0
 		}
-		
 	}
+	
+	 public void die() {
+	        System.out.println("Player died!");
+	        // will change the output once we figure out the death animation for the player as well	
+	 }
+	 
 	//sets the default values of the player
 	public void setDefaultValues() {
 		worldX = gp.tileSize *23; //these are screen position they are players pos on world map
 		worldY = gp.tileSize *21; 
 		speed = 4; 
 		direction = "down"; 
-		
+
 		//player status
 		maxLife = 6;  //means 3 heart 2lives is one heart
 		life = maxLife;
@@ -83,10 +88,10 @@ public class Player extends Entity {
 		left2 = setup("/player/boy_left_2");
 		right1 = setup("/player/boy_right_1");
 		right2 = setup("/player/boy_right_2");
-		
-		
+
+
 	}
-	
+
 	public void update() {
 		//this if is what chagnges the player character from walking animation to standing 
 		if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true) {
@@ -116,23 +121,23 @@ public class Player extends Entity {
 			//check Object collision
 			int objIndex = gp.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
-			
+
 			//NPC Collision
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			interactNPC(npcIndex);
-			
+
 			//Check Event
 			gp.eHandler.checkEvent();
 			gp.keyH.enterPressed =false;
-			
+
 			//update gets called 60x per sec so every frame this below is
 			//called and when it hits 12 the player image will change
 			//if colliosion is false playe can move
 			if(collisionOn == false) {
-				
-			//	worldCtr = worldCtr.translate( dirs[direction].scale(speed) );
-				
-				
+
+				//	worldCtr = worldCtr.translate( dirs[direction].scale(speed) );
+
+
 				switch(direction) {
 				case"up":
 					worldY -= speed; //in java the uppeer left is 0,0 and x increase to right and y+ as go down
@@ -167,7 +172,7 @@ public class Player extends Entity {
 				spriteNum = 1;
 				standCounter = 0;
 			}
-			
+
 		}
 
 
@@ -178,19 +183,19 @@ public class Player extends Entity {
 	 */
 	public void pickUpObject(int i) {
 
-	    if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
-	       
-	    }
+		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
+
+		}
 	}
-	
+
 	public void interactNPC(int i) {
 		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null
-				
+
 			if(gp.keyH.enterPressed == true) { //talk to npc
-				 gp.gameState = gp.dialogueState;
-			      gp.npc[i].speak();
+				gp.gameState = gp.dialogueState;
+				gp.npc[i].speak();
 			}
-	    }
+		}
 		//gp.keyH.enterPressed =false;     currently this is giving bugs in my eventHandler class because it auto sets to false
 	}
 
@@ -241,6 +246,7 @@ public class Player extends Entity {
 		g2.drawImage(image,  screenX,  screenY, null); 
 		//image oobserver is the null val. the other stuff draws that image with the size gp
 	}
+
 }
 
 
@@ -256,9 +262,9 @@ public class Player extends Entity {
 	                hasKey++;
 	                gp.obj[i] = null; // Remove the object after using its name
 	                gp.ui.showMessage("You have picked up a key!");
-	                
-	               
-	                
+
+
+
 	                // System.out.println("Key: " + hasKey);
 	                break;
 
@@ -279,14 +285,14 @@ public class Player extends Entity {
 	            	speed += 2;
 	            	gp.obj[i] = null;
 	            	gp.ui.showMessage("Speed Up!");
-	            	
-	            
+
+
 	            	break;
 	            case "Chest":
 	            	gp.ui.gameFinished =true;
 	            	gp.stopMusic();
 	            	gp.playSE(4);
-	            	
+
 	                break;
         	   }
  */

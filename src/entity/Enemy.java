@@ -3,30 +3,39 @@ package entity;
 import main.GamePanel;
 
 public class Enemy extends Entity{
+	
+	int health;
+	int damage;
 
 	public Enemy(GamePanel gp) {
 		super(gp);
 		direction = "down";
-		speed = 1; 
-		int health = 2; 
-		int damage = 1; 
+		speed = 1;
+		health = 2;
+        damage = 1;
 		getImage();
 		setDialouge() ;
-		takeDamage(); 
-		dealDamage();
+		takeDamage(damage); 
+		dealDamage(null);
 		
 	}
-	private void dealDamage() {
-		PlayerTakeDamage(damage);
+	 public void dealDamage(Player player) {
+	        player.PlayerTakeDamage(damage);
 		
 		
 	}
-	private void takeDamage(int i) {
-		if (PlayerDamage = 1) {
-			int health = health -1; 
-		}
-		return health;
-	}
+	 public void takeDamage(int d) {
+	        health -= d;  
+	        if (health <= 0) {
+	            die(); 
+	        }
+	    }
+	 
+	 public void die() {
+	        // This will be changed when we figure out a way to show the enemy death in the game 
+	        System.out.println("Enemy died!");
+	    }
+	 
 	public void setDialouge() {
 		dialouges[0] = "hrrgh.";
 		dialouges[1] = "I'll get you back for that\n ";
