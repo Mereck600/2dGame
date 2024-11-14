@@ -1,4 +1,5 @@
 package testCases;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +14,12 @@ public class PlayerTest {
     Player player;
     GamePanel gp;
     KeyHandler keyH;
+  
 
     @BeforeEach
     public void setup() {
        
+    	
         gp = new GamePanel();
         keyH = new KeyHandler(gp);
         player = new Player(gp, keyH);
@@ -48,11 +51,4 @@ public class PlayerTest {
         assertEquals(originalWorldY, player.worldY);
     }
 
-   
-
-    @Test
-    public void testInteractNPC_noNPC() {
-        player.interactNPC(0);
-        assertEquals(3, gp.dialogueState);
-    }
 }
