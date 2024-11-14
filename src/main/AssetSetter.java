@@ -3,6 +3,7 @@
  */
 package main;
 
+import entity.Enemy;
 import entity.NPC_OldMan;
 
 import object.OBJ_Boots;
@@ -49,6 +50,12 @@ public class AssetSetter {
 		
 		
 		
+	}
+	
+	public void setEnemy() {
+		gp.Enemy[0]= new Enemy(gp);
+		gp.npc[0].worldX = gp.tileSize *21;
+		gp.npc[0].worldY = gp.tileSize *22;
 	}
 	
 }
