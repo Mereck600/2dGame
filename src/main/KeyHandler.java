@@ -44,7 +44,7 @@ public class KeyHandler implements KeyListener{
 		//pause state
 		else if(gp.gameState == gp.pauseState) {
 			pauseState(code);
-		}
+		}	
 
 		//dialouge state
 		else if(gp.gameState == gp.dialogueState) {
@@ -54,6 +54,7 @@ public class KeyHandler implements KeyListener{
 		else if(gp.gameState == gp.characterState) {
 			characterState(code);
 		}
+		else if()
 
 
 

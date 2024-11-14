@@ -83,6 +83,9 @@ public class Entity {
 		this.gp = gp;
 	}
 	
+	
+	
+	
 	public void setAction() {}
 	public void damgaeReaction() {} //override in classes
 	//Method for allowing npcs to speak

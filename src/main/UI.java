@@ -42,6 +42,7 @@ public class UI {
 	//double playTime;
 	//DecimalFormat dFormat = new DecimalFormat("#0.00");
 	
+	
 
 
 
@@ -69,7 +70,7 @@ public class UI {
 		
 		
 		
-		// font style size don'ttcreate a new instance in game loop just ref
+		// font style size don'ttcreate a new instance in game loop just ref	
 		//OBJ_Key key = new OBJ_Key(gp);
 		//keyImage = key.image;
 	}

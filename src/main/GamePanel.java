@@ -165,7 +165,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		}
 	}
-	
+
 	
 	/**
 	 * Every time a key is pressed it is captured by KeyHandler and th eupdate chages the player cords
