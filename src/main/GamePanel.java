@@ -165,8 +165,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	
 	/**
-	 * Every time a key is pressed it is captured by KeyHandler and th eupdate chages the player cords
-	 * then the pain component is called and rePaints the player model
+	 * Every time a key is pressed it is captured by KeyHandler and the update changes the player cords
+	 * then the paint component is called and rePaints the player model
 	 */
 	public void update() {
 		if(gameState == playState) {
@@ -198,7 +198,7 @@ public class GamePanel extends JPanel implements Runnable{
 			drawStart = System.nanoTime();
 		}
 		
-		//Ttile Screen
+		//Title Screen
 		
 		if(gameState == titleState) {
 			ui.draw(g2);
