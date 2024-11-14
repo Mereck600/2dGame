@@ -49,7 +49,7 @@ public class Player extends Entity {
 		playerDealDamage(null);
 		PlayerTakeDamage(playerDamage);
 	}
-	private void playerDealDamage(Enemy enemy) {
+	public void playerDealDamage(Enemy enemy) {
 		enemy.takeDamage(1);
 
 	}
