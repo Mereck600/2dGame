@@ -1,7 +1,15 @@
 package main;
 
 import javax.swing.JPanel;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import entity.Entity;
 import entity.Player;
@@ -15,6 +23,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class GamePanel extends JPanel implements Runnable{
 	/**
@@ -66,6 +77,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int pauseState = 2;
 	public final int dialogueState =3; 
 	public final int characterState =4;
+	public final int saveState = 5;
 	
 	
 	
@@ -299,5 +311,60 @@ public class GamePanel extends JPanel implements Runnable{
 		se.setFile(i);
 		se.play();
 	}
+	
+
+public void saveGame() {
+    try (PrintWriter writer = new PrintWriter(new FileWriter("savedata.txt"))) {
+        // Save player position
+        writer.println("playerPositionX=" + player.worldX);
+        writer.println("playerPositionY=" + player.worldY);
+
+        // Save other data (like player health, inventory, etc.)
+        writer.println("playerHealth=" + player.life);
+        writer.println("playerLevel=" + player.level);
+        
+        // Add more lines as needed for other player attributes or game state
+        System.out.println("Game saved successfully.");
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+	
+
+public void loadGame() {
+    Map<String, String> loadedData = new HashMap<>();
+
+    try (Scanner scanner = new Scanner(new File("savedata.txt"))) {
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] parts = line.split("=");
+            if (parts.length == 2) {
+                loadedData.put(parts[0], parts[1]);
+            }
+        }
+
+        // Load player position
+        if (loadedData.containsKey("playerPositionX")) {
+            player.worldX = Integer.parseInt(loadedData.get("playerPositionX"));
+        }
+        if (loadedData.containsKey("playerPositionY")) {
+            player.worldY = Integer.parseInt(loadedData.get("playerPositionY"));
+        }
+
+        // Load other data like player health and level
+        if (loadedData.containsKey("playerHealth")) {
+            player.life = Integer.parseInt(loadedData.get("playerHealth"));
+        }
+        if (loadedData.containsKey("playerLevel")) {
+            player.level = Integer.parseInt(loadedData.get("playerLevel"));
+        }
+
+        System.out.println("Game loaded successfully.");
+
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+}
 	
 }

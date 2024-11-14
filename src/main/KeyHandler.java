@@ -54,7 +54,9 @@ public class KeyHandler implements KeyListener{
 		else if(gp.gameState == gp.characterState) {
 			characterState(code);
 		}
-		else if()
+		else if(gp.gameState == gp.saveState) {
+			
+		}
 
 
 
