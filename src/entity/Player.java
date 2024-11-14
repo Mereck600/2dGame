@@ -24,9 +24,10 @@ public class Player extends Entity {
 	public final int screenY;  //these dont change
 	//public int hasKey =0; //can change this so something else but for now leaving it as key bc of interactions w/ door.
 	int standCounter =1;
-	int playerHealth = 3;
+	public int playerHealth = 3;
 	int playerDamage = 1;
-	public Player(GamePanel gp, KeyHandler keyH) {
+
+	public Player(GamePanel gp, KeyHandler keyH2) {
 		super(gp);
 
 		this.keyH = keyH;
@@ -47,7 +48,6 @@ public class Player extends Entity {
 		getPlayerImage();
 		playerDealDamage(null);
 		PlayerTakeDamage(playerDamage);
-
 	}
 	private void playerDealDamage(Enemy enemy) {
 		enemy.takeDamage(1);

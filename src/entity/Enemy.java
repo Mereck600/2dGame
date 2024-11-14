@@ -4,7 +4,7 @@ import main.GamePanel;
 
 public class Enemy extends Entity{
 	
-	int health;
+	public int health;
 	int damage;
 
 	public Enemy(GamePanel gp) {
@@ -21,6 +21,7 @@ public class Enemy extends Entity{
 	}
 	 public void dealDamage(Player player) {
 	        player.PlayerTakeDamage(damage);
+	        //needs to be linked to an animation for enemy doing 
 		
 		
 	}
