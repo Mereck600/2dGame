@@ -199,6 +199,16 @@ public class KeyHandler implements KeyListener{
 
 
 		}
+		if(code == KeyEvent.VK_K) { //user presses w key
+			gp.saveGame();
+
+
+		}
+		if(code == KeyEvent.VK_L) { //user presses w key
+			gp.loadGame();
+
+
+		}
 		if(code == KeyEvent.VK_C) {
 			gp.gameState = gp.characterState;
 		}

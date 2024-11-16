@@ -319,11 +319,13 @@ public void saveGame() {
         writer.println("playerPositionX=" + player.worldX);
         writer.println("playerPositionY=" + player.worldY);
 
-        // Save other data (like player health, inventory, etc.)
+        // Save other data 
         writer.println("playerHealth=" + player.life);
         writer.println("playerLevel=" + player.level);
         
-        // Add more lines as needed for other player attributes or game state
+        System.out.println(new File("savedata.txt").getAbsolutePath());
+
+        
         System.out.println("Game saved successfully.");
 
     } catch (IOException e) {
@@ -334,7 +336,6 @@ public void saveGame() {
 
 public void loadGame() {
     Map<String, String> loadedData = new HashMap<>();
-
     try (Scanner scanner = new Scanner(new File("savedata.txt"))) {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
@@ -344,15 +345,13 @@ public void loadGame() {
             }
         }
 
-        // Load player position
+        // Update player attributes
         if (loadedData.containsKey("playerPositionX")) {
             player.worldX = Integer.parseInt(loadedData.get("playerPositionX"));
         }
         if (loadedData.containsKey("playerPositionY")) {
             player.worldY = Integer.parseInt(loadedData.get("playerPositionY"));
         }
-
-        // Load other data like player health and level
         if (loadedData.containsKey("playerHealth")) {
             player.life = Integer.parseInt(loadedData.get("playerHealth"));
         }
@@ -360,11 +359,14 @@ public void loadGame() {
             player.level = Integer.parseInt(loadedData.get("playerLevel"));
         }
 
-        System.out.println("Game loaded successfully.");
+        // Force game to redraw the updated state
+        gameState = playState;
 
+        System.out.println("Game loaded successfully.");
     } catch (FileNotFoundException e) {
         e.printStackTrace();
     }
 }
+
 	
 }

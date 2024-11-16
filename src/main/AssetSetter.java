@@ -4,6 +4,7 @@
 package main;
 
 import entity.NPC_OldMan;
+import monster.MON_Goblin;
 import monster.MON_GreenSlime;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
@@ -67,6 +68,28 @@ public class AssetSetter {
 		gp.monster[i].worldX = 38 *  gp.tileSize;
 		gp.monster[i].worldY = 42 * gp.tileSize;
 		i++;
+		gp.monster[i] = new MON_Goblin(gp);
+		gp.monster[i].worldX = 39 *  gp.tileSize;
+		gp.monster[i].worldY = 42 * gp.tileSize;
+		i++;
+		gp.monster[i] = new MON_Goblin(gp);
+		gp.monster[i].worldX = 37 *  gp.tileSize;
+		gp.monster[i].worldY = 10 * gp.tileSize;
+		i++;
+		gp.monster[i] = new MON_Goblin(gp);
+		gp.monster[i].worldX = 35 *  gp.tileSize;
+		gp.monster[i].worldY = 10 * gp.tileSize;
+		i++;
+
+		gp.monster[i] = new MON_Goblin(gp);
+		gp.monster[i].worldX = 38 *  gp.tileSize;
+		gp.monster[i].worldY = 10 * gp.tileSize;
+		i++;
+		gp.monster[i] = new MON_GreenSlime(gp);
+		gp.monster[i].worldX = 34 *  gp.tileSize;
+		gp.monster[i].worldY = 10 * gp.tileSize;
+		i++;
+
 		
 	}
 	

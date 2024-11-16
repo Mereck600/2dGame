@@ -1,0 +1,4 @@
+playerPositionX=1100
+playerPositionY=732
+playerHealth=6
+playerLevel=1
