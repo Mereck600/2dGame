@@ -117,6 +117,70 @@ public class UI {
 		if(gp.gameState == gp.characterState) {
 			drawCharacterScreen();
 		}
+		if(gp.gameState == gp.saveState) {
+			drawSaveScreen();
+		}
+		
+	}
+	/**
+	 * Method to draw the ui for the save screen
+	 */
+	public void drawSaveScreen() {
+
+		//create a frame
+		final int frameX = gp.tileSize;
+		final int frameY = gp.tileSize;
+		final int frameWidth = gp.tileSize*5;
+		final int frameHeight = gp.tileSize*10;
+		String text ="";
+		
+		drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+		
+		//TEXT
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(32F));
+		int textX = frameX +20;
+		int textY = frameY +gp.tileSize;
+		int tailX = (frameX + frameWidth) -20;
+		int drawX;
+		
+		final int lineHeight =55;
+		
+		text = "Select Save";
+		g2.drawString(text, textX, textY);
+		textY+= lineHeight;
+		
+		text = "Restart";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 0) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+		text = "Save One";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 1) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+		text = "Save Two";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 2) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+		text = "Save Three";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 3) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
 		
 	}
 	
@@ -224,6 +288,7 @@ public class UI {
 		//values aligned right
 		
 		int tailX = (frameX + frameWidth) -30;
+		
 		//reset text y
 		textY = frameY + gp.tileSize;
 		String value;
@@ -378,11 +443,52 @@ public class UI {
 			g2.drawString(text,x,y);		
 			if(commandNum == 3) {
 				g2.drawString(">", x-gp.tileSize, y);
+			}			
+			
+		}
+		
+		else if(titleScreenState == 2) {
+			
+			//player Selection screen
+			g2.setColor(Color.white);
+			g2.setFont(g2.getFont().deriveFont(42F));
+			
+			String text = "Directions";
+			int x =  getXforCenteredText(text);
+			int y =  gp.tileSize*3;
+			g2.drawString(text,x,y);
+			
+			text = "Press WASD to move";
+			x =  getXforCenteredText(text);
+			y += gp.tileSize*3;
+			g2.drawString(text,x,y);		
+			if(commandNum == 0) {
+				g2.drawString(">", x-gp.tileSize, y);
 			}
 			
+			text = "K to save, L to Load";
+			x =  getXforCenteredText(text);
+			y += gp.tileSize;
+			g2.drawString(text,x,y);		
+			if(commandNum == 1) {
+				g2.drawString(">", x-gp.tileSize, y);
+			}
 			
+			text = "Enter to interact and fight";
+			x =  getXforCenteredText(text);
+			y += gp.tileSize;
+			g2.drawString(text,x,y);		
+			if(commandNum == 2) {
+				g2.drawString(">", x-gp.tileSize, y);
+			}
 			
-			
+			text = "Press Enter to continue!";
+			x =  getXforCenteredText(text);
+			y += gp.tileSize*2;
+			g2.drawString(text,x,y);		
+			if(commandNum == 3) {
+				g2.drawString(">", x-gp.tileSize, y);
+			}			
 			
 		}
 		

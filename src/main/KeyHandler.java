@@ -55,12 +55,68 @@ public class KeyHandler implements KeyListener{
 			characterState(code);
 		}
 		else if(gp.gameState == gp.saveState) {
-			
+			saveState(code);
 		}
 
 
 
 
+	}
+	
+	public void saveState(int code) {
+		if(code == KeyEvent.VK_W) { //user presses w key
+			//directionPressed = Direction.UP;
+			gp.ui.commandNum--;
+			if(gp.ui.commandNum< 0) {
+				gp.ui.commandNum =3; 
+			}
+
+		}
+		if(code == KeyEvent.VK_S) { //user presses w key
+			gp.ui.commandNum ++;
+			if(gp.ui.commandNum> 3) {
+				gp.ui.commandNum =0; 
+				if(gp.ui.commandNum< 0) {
+					gp.ui.commandNum =3; 
+				}
+			}
+
+		}
+
+		if(code == KeyEvent.VK_UP) { //user presses w key
+			//directionPressed = Direction.UP;
+			gp.ui.commandNum--;
+			if(gp.ui.commandNum< 0) {
+				gp.ui.commandNum =3; 
+			}
+
+		}
+		if(code == KeyEvent.VK_DOWN) { //user presses w key
+			gp.ui.commandNum ++;
+			if(gp.ui.commandNum> 3 ) {
+				gp.ui.commandNum =0; 
+			}
+
+		}
+		//Press the enter Key and then save the game
+		if(code == KeyEvent.VK_ENTER) {
+			if(gp.ui.commandNum == 0) {
+				gp.saveGame();
+				gp.gameState = gp.playState;
+				}
+			if(gp.ui.commandNum == 1) {
+				gp.saveGame();
+				gp.gameState = gp.playState;
+			}
+			if(gp.ui.commandNum == 2) {
+				gp.saveGame();
+				gp.gameState = gp.playState;
+			}
+			if(gp.ui.commandNum == 3) {
+				gp.saveGame();
+				gp.gameState = gp.playState;
+			}
+		}
 	}
 
 	public void titleState(int code) {
@@ -106,7 +162,7 @@ public class KeyHandler implements KeyListener{
 					//gp.playMusic(0);
 
 				}
-				if(gp.ui.commandNum == 1) {}//add later
+				if(gp.ui.commandNum == 1) {}//add later this is the load game
 				if(gp.ui.commandNum == 2) {
 					System.exit(0);
 				}
@@ -151,22 +207,66 @@ public class KeyHandler implements KeyListener{
 
 			}
 			if (code == KeyEvent.VK_ENTER) {
+				System.out.println("do something related to Fighter");
+				gp.ui.titleScreenState =2;
+				
+			}
+
+		}
+		
+		
+		
+		else if(gp.ui.titleScreenState == 2) {
+			if(code == KeyEvent.VK_W) { //user presses w key
+				//directionPressed = Direction.UP;
+				gp.ui.commandNum--;
+				if(gp.ui.commandNum < 0) {
+					gp.ui.commandNum = 3; 
+				}
+				//moves the cursor
+			}
+			if(code == KeyEvent.VK_S) { //user presses w key
+				gp.ui.commandNum ++;
+				if(gp.ui.commandNum> 3 ) {
+					gp.ui.commandNum =0; 
+
+				}
+
+			}
+
+			if(code == KeyEvent.VK_UP) { //user presses w key
+				//directionPressed = Direction.UP;
+				gp.ui.commandNum--;
+				if(gp.ui.commandNum< 0) {
+					gp.ui.commandNum =3; 
+				}
+
+			}
+			if(code == KeyEvent.VK_DOWN) { //user presses w key
+				gp.ui.commandNum ++;
+				if(gp.ui.commandNum> 3 ) {
+					gp.ui.commandNum =0; 
+				}
+
+			}
+			if (code == KeyEvent.VK_ENTER) {
 				if (gp.ui.commandNum == 0) { 
-					System.out.println("do something related to Wiz");
+					System.out.println("Start game!");
 					gp.gameState = gp.playState;
 					gp.playMusic(0);
 				} else if (gp.ui.commandNum == 1) { 
-					System.out.println("do something related to Thief");
+					System.out.println("Start game!");
 					gp.gameState = gp.playState;
 					gp.playMusic(0);
 				} else if (gp.ui.commandNum == 2) { 
-					System.out.println("do something related to Dude");
+					System.out.println("Start game!");
 					gp.gameState = gp.playState;
 					gp.playMusic(0);
 				} else if (gp.ui.commandNum == 3) { 
 					// Set this to go back to the previous menu or title state
-					gp.ui.titleScreenState = 0;
-					System.out.println("Going back to the previous menu");
+					System.out.println("Start game!");
+					gp.gameState = gp.playState;
+					gp.playMusic(0);
 				}
 			}
 
@@ -196,12 +296,14 @@ public class KeyHandler implements KeyListener{
 		}
 		if(code == KeyEvent.VK_P) { //user presses w key
 			gp.gameState = gp.pauseState;
+			//gp.gameState = gp.saveState;
+
 
 
 		}
 		if(code == KeyEvent.VK_K) { //user presses w key
-			gp.saveGame();
-
+			//gp.saveGame();
+			gp.gameState = gp.saveState;
 
 		}
 		if(code == KeyEvent.VK_L) { //user presses w key

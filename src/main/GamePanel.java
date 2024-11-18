@@ -297,22 +297,29 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 	}
-	
+	//Play music pretty simple
 	public void playMusic(int i) {
 		music.setFile(i);
 		music.play();
 		music.loop();
 		
 	}
+	//stop music even simpler
 	public void stopMusic() {
 		music.stop();
 	}
+	//playSe plays sound effect
 	public void playSE(int i ) {
 		se.setFile(i);
 		se.play();
 	}
 	
-
+/**
+ * Save game is the method that saves the game to a text file 
+ * it takes all of the data the the player has and then writes it to the save file
+ * at the moment only one save file is available
+ * 
+ */
 public void saveGame() {
     try (PrintWriter writer = new PrintWriter(new FileWriter("savedata.txt"))) {
         // Save player position
@@ -334,7 +341,12 @@ public void saveGame() {
     }
 }
 	
-
+/**
+ * Load game initializes a hashmap
+ * it starts a scanner and tries to read the lines of savedata.txt file
+ * uses the integer.parseInt and sets the player values to what is in txt file
+ * Then it makes sure to update the game ensuring that the gameState is set to play
+ */
 public void loadGame() {
     Map<String, String> loadedData = new HashMap<>();
     try (Scanner scanner = new Scanner(new File("savedata.txt"))) {
