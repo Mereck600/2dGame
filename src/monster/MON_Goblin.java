@@ -35,10 +35,10 @@ public class MON_Goblin  extends Entity{
 	}
 	
 	public void getImage() {
-		up1 = setup("/monster/goblin_up1", gp.tileSize, gp.tileSize);
-		up2 = setup("/monster/goblin_up2", gp.tileSize, gp.tileSize);
-		down1 = setup("/monster/goblin_down1", gp.tileSize, gp.tileSize);
-		down2 = setup("/monster/goblin_down2", gp.tileSize, gp.tileSize);
+		up1 = setup("/monster/goblin_up1", 2*gp.tileSize, 2*gp.tileSize);
+		up2 = setup("/monster/goblin_up2",2*gp.tileSize, 2*gp.tileSize);
+		down1 = setup("/monster/goblin_down1", 2*gp.tileSize, 2*gp.tileSize);
+		down2 = setup("/monster/goblin_down2", 2*gp.tileSize, 2*gp.tileSize);
 		left1 = setup("/monster/goblin_left1", gp.tileSize, gp.tileSize);
 		left2 = setup("/monster/goblin_left2", gp.tileSize, gp.tileSize);
 		right1 = setup("/monster/goblin_right1", gp.tileSize, gp.tileSize);

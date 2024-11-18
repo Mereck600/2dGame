@@ -206,6 +206,7 @@ public class KeyHandler implements KeyListener{
 		}
 		if(code == KeyEvent.VK_L) { //user presses w key
 			gp.loadGame();
+			
 
 
 		}
