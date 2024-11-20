@@ -27,7 +27,7 @@ public class Player extends Entity {
 	public int playerHealth = 3;
 	int playerDamage = 1;
 
-	public Player(GamePanel gp, KeyHandler keyH2) {
+	public Player(GamePanel gp, KeyHandler keyH) {
 		super(gp);
 
 		this.keyH = keyH;
@@ -46,7 +46,7 @@ public class Player extends Entity {
 
 		setDefaultValues();
 		getPlayerImage();
-		playerDealDamage(null);
+		playerDealDamage(0);
 		PlayerTakeDamage(playerDamage);
 	}
 	public void playerDealDamage(Enemy enemy) {
