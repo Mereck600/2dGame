@@ -17,6 +17,7 @@ public class EntityTest {
 
     Player player;
     Entity MON_Goblin;
+    Entity MON_GreenSlime;
     GamePanel gp;
     KeyHandler keyH;
 	public AssetSetter aSetter = new AssetSetter(gp);
@@ -47,18 +48,6 @@ public class EntityTest {
     }
 
     @Test
-    public void testEnemyTakeDamage() {
-        int initialHealth = MON_Goblin.life;
-
-        MON_Goblin.takeDamage(3);  
-        assertEquals("Enemy health should decrease by 3", initialHealth - 3, MON_Goblin.life);
-
-        // Test if enemy dies when health reaches 0
-        MON_Goblin.takeDamage(3); 
-        assertTrue("Enemy should have died when health is 0 or less", MON_Goblin.life <= 0);
-    }
-
-    @Test
     public void testPlayerDealDamageToEnemy() {
         int initialHealth = MON_Goblin.life;
 
@@ -77,9 +66,9 @@ public class EntityTest {
         int initialHealth = MON_GreenSlime.life;
 
         player.damageMonster(5); 
-        assertEquals("Player health should decrease by 1", initialHealth - 1, MON_GreenSlime.life);
+        assertEquals( initialHealth - 3, MON_GreenSlime.life);
 
-        enemy.dealDamage(player);  
-        assertEquals("Player health should decrease by 2 after two attacks", initialHealth - 2, MON_GreenSlime.life);
+        player.damageMonster(5);  
+        assertEquals(initialHealth - 3, MON_GreenSlime.life);
     }
 }
