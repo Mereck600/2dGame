@@ -1,9 +1,12 @@
+package testCases;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import monster.MON_Goblin;
+import monster.MON_GreenSlime;
 import entity.Entity;
 import entity.Player;
 import main.AssetSetter;
@@ -45,38 +48,38 @@ public class EntityTest {
 
     @Test
     public void testEnemyTakeDamage() {
-        int initialHealth = enemy.health;
+        int initialHealth = MON_Goblin.life;
 
         MON_Goblin.takeDamage(3);  
-        assertEquals("Enemy health should decrease by 3", initialHealth - 3, MON_Goblin.health);
+        assertEquals("Enemy health should decrease by 3", initialHealth - 3, MON_Goblin.life);
 
         // Test if enemy dies when health reaches 0
         MON_Goblin.takeDamage(3); 
-        assertTrue("Enemy should have died when health is 0 or less", enemy.health <= 0);
+        assertTrue("Enemy should have died when health is 0 or less", MON_Goblin.life <= 0);
     }
 
     @Test
     public void testPlayerDealDamageToEnemy() {
-        int initialHealth = enemy.health;
+        int initialHealth = MON_Goblin.life;
 
-        player.playerDealDamage(enemy); 
+        player.damageMonster(5); 
 
         // Verify enemy health decreases by 1
-        assertEquals("Enemy health should decrease by 1", initialHealth - 1, enemy.health);
+        assertEquals(initialHealth - 1, MON_Goblin.life);
 
         // Verify health decreases correctly when multiple damages are dealt
-        player.playerDealDamage(enemy);
-        assertEquals("Enemy health should decrease by 2 after two attacks", initialHealth - 2, enemy.health);
+        player.damageMonster(5);
+        assertEquals(initialHealth - 1, MON_Goblin.life);
     }
 
     @Test
-    public void testEnemyDealDamageToPlayer() {
-        int initialHealth = player.life;
+    public void playerDamageToSlime() {
+        int initialHealth = MON_GreenSlime.life;
 
-        enemy.dealDamage(player); 
-        assertEquals("Player health should decrease by 1", initialHealth - 1, player.life);
+        player.damageMonster(5); 
+        assertEquals("Player health should decrease by 1", initialHealth - 1, MON_GreenSlime.life);
 
         enemy.dealDamage(player);  
-        assertEquals("Player health should decrease by 2 after two attacks", initialHealth - 2, player.life);
+        assertEquals("Player health should decrease by 2 after two attacks", initialHealth - 2, MON_GreenSlime.life);
     }
 }

@@ -1,4 +1,4 @@
-playerPositionX=1104
-playerPositionY=1148
-playerHealth=6
-playerLevel=1
+playerPositionX=1088
+playerPositionY=724
+playerHealth=10
+playerLevel=3

@@ -55,7 +55,7 @@ public class GameSaveLoad {
                 gp.player.nextLevelExp = Integer.parseInt(data[7]);
                 gp.player.coin = Integer.parseInt(data[8]);
                 
-                // Eventuall make this able to be set by id because it will be pain in asshole otherwise
+                // Eventually make this able to be set by id because it will be pain in asshole otherwise
               //  gp.player.currentWeapon = new Entity(Integer.parseInt(data[9])); // Weapon ID
                // gp.player.currentSheild = new Entity(Integer.parseInt(data[10])); // Shield ID
                 gp.player.currentWeapon = new OBJ_Sword_Normal(gp);
