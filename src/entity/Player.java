@@ -307,6 +307,9 @@ public class Player extends Entity {
 				}
 				life -= damage;
 				invincible =true;
+				if(life <=0) {
+					alive =false;
+				}
 			}
 
 		}

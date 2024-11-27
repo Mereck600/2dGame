@@ -120,6 +120,73 @@ public class UI {
 		if(gp.gameState == gp.saveState) {
 			drawSaveScreen();
 		}
+		if(gp.gameState == gp.dieState) {
+			drawDieScreen();
+		}
+		
+	}
+	public void drawDieScreen() {
+		//window
+				int x = gp.tileSize*2;
+				int y = gp.tileSize/2;
+				int width = gp.screenWidth -(gp.tileSize*4);
+				int height = gp.tileSize*4;
+				int drawX;
+				String text;
+				
+				drawSubWindow(x,y,width,height);
+				g2.setFont(g2.getFont().deriveFont(Font.PLAIN,32F));
+				
+				
+				text = "You have died";
+				int dieX = getXforCenteredText(text)-gp.tileSize;
+				if(commandNum == 0) {
+					drawX = getXforAlignToRightText(text, x);
+					g2.drawString("<", drawX+gp.tileSize,y);  //change to draw image if we want to use a selector image
+				}
+				y += 40;
+				
+				g2.drawString(text , dieX, y);
+				y += 40;
+				
+				
+				
+				
+				text = "Load Save";
+				int sX = getXforCenteredText(text) -gp.tileSize;
+				if(commandNum == 1) {
+					drawX = getXforAlignToRightText(text, sX);
+					g2.drawString("<", drawX+gp.tileSize,y);  //change to draw image if we want to use a selector image
+				}
+				
+				g2.drawString(text, sX, y);
+				y += 40;
+				
+
+				text = "Back to Title";
+				int tX = getXforCenteredText(text)-gp.tileSize;
+				if(commandNum == 2) {
+					drawX = getXforAlignToRightText(text, tX);
+					g2.drawString("<", drawX+gp.tileSize,y);  //change to draw image if we want to use a selector image
+				}
+				g2.drawString(text, tX, y);
+				y += 40;
+			
+
+				
+
+				
+				 //split text in the dialouge by keyword \n and draw and then increase y to displays
+					
+					
+					
+					
+				
+					
+					
+					
+					
+				
 		
 	}
 	/**

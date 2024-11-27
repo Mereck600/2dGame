@@ -57,6 +57,9 @@ public class KeyHandler implements KeyListener{
 		else if(gp.gameState == gp.saveState) {
 			saveState(code);
 		}
+		else if(gp.gameState == gp.dieState) {
+			dieState(code);
+		}
 
 
 
@@ -353,6 +356,57 @@ public class KeyHandler implements KeyListener{
 		if(code == KeyEvent.VK_C) {
 			gp.gameState = gp.playState;
 		}
+	}
+	
+	public void dieState(int code) {
+		if(code == KeyEvent.VK_W) { //user presses w key
+			//directionPressed = Direction.UP;
+			gp.ui.commandNum--;
+			if(gp.ui.commandNum< 0) {
+				gp.ui.commandNum =1; 
+			}
+
+		}
+		if(code == KeyEvent.VK_S) { //user presses w key
+			gp.ui.commandNum ++;
+			if(gp.ui.commandNum> 1) {
+				gp.ui.commandNum =0; 
+				if(gp.ui.commandNum< 0) {
+					gp.ui.commandNum =1; 
+				}
+			}
+
+		}
+
+		if(code == KeyEvent.VK_UP) { //user presses w key
+			//directionPressed = Direction.UP;
+			gp.ui.commandNum--;
+			if(gp.ui.commandNum< 0) {
+				gp.ui.commandNum =1; 
+			}
+
+		}
+		if(code == KeyEvent.VK_DOWN) { //user presses w key
+			gp.ui.commandNum ++;
+			if(gp.ui.commandNum> 1 ) {
+				gp.ui.commandNum =0; 
+			}
+
+		}
+		//Press the enter Key and then save the game
+		if(code == KeyEvent.VK_ENTER) {
+			if(gp.ui.commandNum == 0) {
+				gp.player.life=
+				gp.loadGame();
+				gp.gameState = gp.playState;
+				}
+			if(gp.ui.commandNum == 1) {
+				gp.gameState = gp.titleState;
+			}
+			
+		}
+		
+		
 	}
 
 

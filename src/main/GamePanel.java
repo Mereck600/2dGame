@@ -78,6 +78,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int dialogueState =3; 
 	public final int characterState =4;
 	public final int saveState = 5;
+	public final int loadState = 6;
+	public final int dieState =7;
 	
 	
 	
@@ -203,11 +205,14 @@ public class GamePanel extends JPanel implements Runnable{
 					
 				}
 			}
-			
+			if(player.alive == false) {
+				gameState = dieState;
+			}
 		}
 		if(gameState == pauseState) {
-			//nothing
+			//nothing yet
 		}
+		
 		
 	}
 	/**
@@ -334,6 +339,8 @@ public void saveGame() {
 
         
         System.out.println("Game saved successfully.");
+        //make sure to use the flush and the writer close in order to get the file to properly save otherwise it will not read the current save if you try to load again 
+        //it will simply load the save you had last one you closed the game
         writer.flush();
         writer.close();
     } catch (IOException e) {
