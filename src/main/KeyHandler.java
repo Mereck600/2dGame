@@ -60,12 +60,75 @@ public class KeyHandler implements KeyListener{
 		else if(gp.gameState == gp.dieState) {
 			dieState(code);
 		}
+		else if(gp.gameState == gp.loadState) {
+			loadState(code);
+		}
 
 
 
 
 	}
-	
+	/** 
+	 * Key handler for the load 
+	 * @param code
+	 */
+	public void loadState(int code) {
+		if(code == KeyEvent.VK_W) { //user presses w key
+			//directionPressed = Direction.UP;
+			gp.ui.commandNum--;
+			if(gp.ui.commandNum< 0) {
+				gp.ui.commandNum =3; 
+			}
+
+		}
+		if(code == KeyEvent.VK_S) { //user presses w key
+			gp.ui.commandNum ++;
+			if(gp.ui.commandNum> 3) {
+				gp.ui.commandNum =0; 
+				if(gp.ui.commandNum< 0) {
+					gp.ui.commandNum =3; 
+				}
+			}
+
+		}
+
+		if(code == KeyEvent.VK_UP) { //user presses w key
+			//directionPressed = Direction.UP;
+			gp.ui.commandNum--;
+			if(gp.ui.commandNum< 0) {
+				gp.ui.commandNum =3; 
+			}
+
+		}
+		if(code == KeyEvent.VK_DOWN) { //user presses w key
+			gp.ui.commandNum ++;
+			if(gp.ui.commandNum> 3 ) {
+				gp.ui.commandNum =0; 
+			}
+
+		}
+		//Press the enter Key and then save the game
+		if(code == KeyEvent.VK_ENTER) {
+			if(gp.ui.commandNum == 0) {
+				gp.loadGame("basesave.txt");
+				gp.gameState = gp.playState;
+				}
+			if(gp.ui.commandNum == 1) {
+				gp.loadGame("savedata1.txt");
+				gp.gameState = gp.playState;
+			}
+			if(gp.ui.commandNum == 2) {
+				gp.loadGame("savedata2.txt");
+				gp.gameState = gp.playState;
+			}
+			if(gp.ui.commandNum == 3) {
+				gp.loadGame("savadata3.txt");
+				gp.gameState = gp.playState;
+			}
+		}
+		
+	}
+
 	public void saveState(int code) {
 		if(code == KeyEvent.VK_W) { //user presses w key
 			//directionPressed = Direction.UP;
@@ -104,19 +167,19 @@ public class KeyHandler implements KeyListener{
 		//Press the enter Key and then save the game
 		if(code == KeyEvent.VK_ENTER) {
 			if(gp.ui.commandNum == 0) {
-				gp.saveGame();
+				gp.saveGame("basesave.txt");
 				gp.gameState = gp.playState;
 				}
 			if(gp.ui.commandNum == 1) {
-				gp.saveGame();
+				gp.saveGame("savedata1.txt");
 				gp.gameState = gp.playState;
 			}
 			if(gp.ui.commandNum == 2) {
-				gp.saveGame();
+				gp.saveGame("savedata2.txt");
 				gp.gameState = gp.playState;
 			}
 			if(gp.ui.commandNum == 3) {
-				gp.saveGame();
+				gp.saveGame("savadata3.txt");
 				gp.gameState = gp.playState;
 			}
 		}
@@ -165,7 +228,9 @@ public class KeyHandler implements KeyListener{
 					//gp.playMusic(0);
 
 				}
-				if(gp.ui.commandNum == 1) {}//add later this is the load game
+				if(gp.ui.commandNum == 1) {
+					gp.gameState = gp.loadState;
+				}//add later this is the load game
 				if(gp.ui.commandNum == 2) {
 					System.exit(0);
 				}
@@ -310,8 +375,9 @@ public class KeyHandler implements KeyListener{
 
 		}
 		if(code == KeyEvent.VK_L) { //user presses w key
-			gp.loadGame();
-			
+			//also change to the title screen state that is the load function
+			//gp.loadGame();
+			gp.gameState = gp.loadState;
 
 
 		}
@@ -367,7 +433,7 @@ public class KeyHandler implements KeyListener{
 			}
 
 		}
-		if(code == KeyEvent.VK_S) { //user presses w key
+		if(code == KeyEvent.VK_S) { //user presses s key
 			gp.ui.commandNum ++;
 			if(gp.ui.commandNum> 1) {
 				gp.ui.commandNum =0; 
@@ -393,15 +459,25 @@ public class KeyHandler implements KeyListener{
 			}
 
 		}
-		//Press the enter Key and then save the game
+		//Press the enter Key\
+		
 		if(code == KeyEvent.VK_ENTER) {
-			if(gp.ui.commandNum == 0) {
-				gp.player.life=
-				gp.loadGame();
-				gp.gameState = gp.playState;
+			if(gp.ui.commandNum == 0) { // this is for the load game; this works
+		//*************************************************************************Issue: when player levels up then dies, the heart gained from leveling up stays there**************
+				gp.player.alive =true;
+				//change to title screen state and and into the load section that way I can avoid making another ui method or anything
+				//gp.loadGame("basesave.txt");
+				gp.gameState = gp.loadState;
+				//gp.gameState = gp.playState;
 				}
-			if(gp.ui.commandNum == 1) {
+			if(gp.ui.commandNum == 1) { // this is for the go back to title thsi works but when you go back into the title screen it starts on last menue and player is dead
+				//this really should be reset in the title but its late and im tired
+				gp.loadGame("basesave.txt"); //this should be used to load the base state of the world 
+				gp.player.alive =true;
+				gp.ui.titleScreenState =0; //this line right here fixed that issue of going to last menue i schould probably put this somewhere else but ok for now 
 				gp.gameState = gp.titleState;
+			 
+				
 			}
 			
 		}

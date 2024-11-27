@@ -123,8 +123,88 @@ public class UI {
 		if(gp.gameState == gp.dieState) {
 			drawDieScreen();
 		}
+		if(gp.gameState == gp.loadState) {
+			drawLoadScreen();
+		}
 		
 	}
+	
+	/**
+	 * Here is the method for the draw load screen but all of the othem methods below are pretty similar in concept.
+	 * basically just drawing rectangles and strings its not very complicated there are helper methods below
+	 * the rectangles and the strigns that are drawn are dependent on a few things but besides that straight foward
+	 * Also I am feeling lazy so the save an load are pretty much the same 
+	 */
+	public void drawLoadScreen() {
+
+		//create a frame
+		final int frameX = gp.tileSize;
+		final int frameY = gp.tileSize;
+		final int frameWidth = gp.tileSize*5;
+		final int frameHeight = gp.tileSize*10;
+		String text ="";
+		
+		drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+		
+		//TEXT
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(32F));
+		int textX = frameX +20;
+		int textY = frameY +gp.tileSize;
+		int tailX = (frameX + frameWidth) -20;
+		int drawX;
+		
+		final int lineHeight =55;
+		
+		text = "Select Save file";
+		g2.drawString(text, textX, textY);
+		textY+= lineHeight;
+		
+		text = "to load";
+		g2.drawString(text, textX+gp.tileSize, textY);
+		
+		drawSubWindow(textX-(gp.tileSize/2),textY+10,frameWidth,10);
+		textY+= lineHeight;
+		
+		
+		
+		text = "Restart";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 0) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+		text = "Save One";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 1) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+		text = "Save Two";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 2) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+		text = "Save Three";
+		g2.drawString(text, textX, textY);
+		if(commandNum == 3) {
+			drawX = getXforAlignToRightText(text, tailX);
+			g2.drawString("<", drawX+gp.tileSize,textY);  //change to draw image if we want to use a selector image
+		}
+		textY+= lineHeight;
+		
+	}
+	
+	/** 
+	 * method to draw the die screen
+	 */
 	public void drawDieScreen() {
 		//window
 				int x = gp.tileSize*2;
@@ -140,10 +220,7 @@ public class UI {
 				
 				text = "You have died";
 				int dieX = getXforCenteredText(text)-gp.tileSize;
-				if(commandNum == 0) {
-					drawX = getXforAlignToRightText(text, x);
-					g2.drawString("<", drawX+gp.tileSize,y);  //change to draw image if we want to use a selector image
-				}
+				
 				y += 40;
 				
 				g2.drawString(text , dieX, y);
@@ -154,9 +231,9 @@ public class UI {
 				
 				text = "Load Save";
 				int sX = getXforCenteredText(text) -gp.tileSize;
-				if(commandNum == 1) {
+				if(commandNum == 0) {
 					drawX = getXforAlignToRightText(text, sX);
-					g2.drawString("<", drawX+gp.tileSize,y);  //change to draw image if we want to use a selector image
+					g2.drawString(">", drawX+2*gp.tileSize,y);  //change to draw image if we want to use a selector image
 				}
 				
 				g2.drawString(text, sX, y);
@@ -165,9 +242,9 @@ public class UI {
 
 				text = "Back to Title";
 				int tX = getXforCenteredText(text)-gp.tileSize;
-				if(commandNum == 2) {
+				if(commandNum == 1) {
 					drawX = getXforAlignToRightText(text, tX);
-					g2.drawString("<", drawX+gp.tileSize,y);  //change to draw image if we want to use a selector image
+					g2.drawString(">", drawX+2*gp.tileSize,y);  //change to draw image if we want to use a selector image
 				}
 				g2.drawString(text, tX, y);
 				y += 40;
@@ -251,7 +328,7 @@ public class UI {
 		
 	}
 	
-	/*
+	/**
 	 * Method to draw the players health
 	 */
 	public void drawPlayerLife() {
@@ -284,6 +361,10 @@ public class UI {
 		 }
 	}
 	
+	/**
+	 * THis drawMessage method is more fun than the others but it still follows the draw string and recatangles but this time
+	 * we get to instanciate over and arrayList full of special messages depending on what needs to be drawn for character
+	 */
 	public void drawMessage() {
 		int messageX = gp.tileSize;
 		int messageY = gp.tileSize*4;

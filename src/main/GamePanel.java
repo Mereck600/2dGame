@@ -320,73 +320,70 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 /**
+ * Save game nwo takes a string file name so it can now do more 
  * Save game is the method that saves the game to a text file 
  * it takes all of the data the the player has and then writes it to the save file
  * at the moment only one save file is available
  * 
  */
-public void saveGame() {
-    try (PrintWriter writer = new PrintWriter(new FileWriter("savedata.txt"))) {
-        // Save player position
-        writer.println("playerPositionX=" + player.worldX);
-        writer.println("playerPositionY=" + player.worldY);
+	public void saveGame(String fileName) {
+	    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+	        // Save player position
+	        writer.println("playerPositionX=" + player.worldX);
+	        writer.println("playerPositionY=" + player.worldY);
 
-        // Save other data 
-        writer.println("playerHealth=" + player.life);
-        writer.println("playerLevel=" + player.level);
-        
-        System.out.println(new File("savedata.txt").getAbsolutePath());
+	        // Save other data
+	        writer.println("playerHealth=" + player.life);
+	        writer.println("playerLevel=" + player.level);
 
-        
-        System.out.println("Game saved successfully.");
-        //make sure to use the flush and the writer close in order to get the file to properly save otherwise it will not read the current save if you try to load again 
-        //it will simply load the save you had last one you closed the game
-        writer.flush();
-        writer.close();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+	        System.out.println("Game saved successfully to " + new File(fileName).getAbsolutePath());
+
+	        // Ensure the writer flushes its contents properly (although try-with-resources handles this)
+	        writer.flush();
+	        writer.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 	
 /**
+ * Load game n ow updaded to take a sting file name allowing for slighlty more save options
  * Load game initializes a hashmap
  * it starts a scanner and tries to read the lines of savedata.txt file
  * uses the integer.parseInt and sets the player values to what is in txt file
  * Then it makes sure to update the game ensuring that the gameState is set to play
  */
-public void loadGame() {
-    Map<String, String> loadedData = new HashMap<>();
-    try (Scanner scanner = new Scanner(new File("savedata.txt"))) {
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            String[] parts = line.split("=");
-            if (parts.length == 2) {
-                loadedData.put(parts[0], parts[1]);
-            }
-        }
+	public void loadGame(String fileName) {
+	    Map<String, String> loadedData = new HashMap<>();
+	    try (Scanner scanner = new Scanner(new File(fileName))) {
+	        while (scanner.hasNextLine()) {
+	            String line = scanner.nextLine();
+	            String[] parts = line.split("=");
+	            if (parts.length == 2) {
+	                loadedData.put(parts[0], parts[1]);
+	            }
+	        }
 
-        // Update player attributes
-        if (loadedData.containsKey("playerPositionX")) {
-            player.worldX = Integer.parseInt(loadedData.get("playerPositionX"));
-        }
-        if (loadedData.containsKey("playerPositionY")) {
-            player.worldY = Integer.parseInt(loadedData.get("playerPositionY"));
-        }
-        if (loadedData.containsKey("playerHealth")) {
-            player.life = Integer.parseInt(loadedData.get("playerHealth"));
-        }
-        if (loadedData.containsKey("playerLevel")) {
-            player.level = Integer.parseInt(loadedData.get("playerLevel"));
-        }
+	        // Update player attributes
+	        if (loadedData.containsKey("playerPositionX")) {
+	            player.worldX = Integer.parseInt(loadedData.get("playerPositionX"));
+	        }
+	        if (loadedData.containsKey("playerPositionY")) {
+	            player.worldY = Integer.parseInt(loadedData.get("playerPositionY"));
+	        }
+	        if (loadedData.containsKey("playerHealth")) {
+	            player.life = Integer.parseInt(loadedData.get("playerHealth"));
+	        }
+	        if (loadedData.containsKey("playerLevel")) {
+	            player.level = Integer.parseInt(loadedData.get("playerLevel"));
+	        }
 
-        // Force game to redraw the updated state
-        gameState = playState;
+	        // Force game to redraw the updated state
+	        gameState = playState;
 
-        System.out.println("Game loaded successfully.");
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    }
-}
-
-	
+	        System.out.println("Game loaded successfully from " + new File(fileName).getAbsolutePath());
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    }
+	}
 }
