@@ -44,7 +44,9 @@ public class NPC_OldMan extends Entity{
 		
 	}
 	
-	//this will almost work like an ai will be different for all npcs 
+	/**this will almost work like an ai will be different for all npcs 
+	 * 
+	 */
 	public void setAction() {
 
 		actionLockCounter ++;
@@ -73,10 +75,14 @@ public class NPC_OldMan extends Entity{
 		
 
 	}
-	
+	/**
+	 * Makes the npc talk 
+	 * through text but could add a sound effect later
+	 */
 	public void speak() {
 		//character specific speech
 		super.speak();
+		gp.playSE(10);  //-> example of a sound effect added in here
 		
 	}
 

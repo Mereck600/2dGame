@@ -95,6 +95,9 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setFocusable(true); //this makes the gamePanel ale to recieve input
 		
 	}
+	/**
+	 * Method to set up the game
+	 */
 	public void setUpGame() {
 		aSetter.setObject();
 		aSetter.setNPC();
@@ -302,18 +305,27 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 	}
-	//Play music pretty simple
+	/**Play music pretty simple
+	 * 
+	 * @param i
+	 */
 	public void playMusic(int i) {
 		music.setFile(i);
 		music.play();
 		music.loop();
 		
 	}
-	//stop music even simpler
+	/**stop music even simpler
+	 * 
+	 */
+	
 	public void stopMusic() {
 		music.stop();
 	}
-	//playSe plays sound effect
+	/**playSe plays sound effect
+	 * 
+	 * @param i
+	 */
 	public void playSE(int i ) {
 		se.setFile(i);
 		se.play();

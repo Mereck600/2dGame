@@ -20,11 +20,18 @@ public class Sound {
 		soundURL[6] = getClass().getResource("/sound/receivedamage.wav");
 		soundURL[7] = getClass().getResource("/sound/swing.wav");
 		soundURL[8] = getClass().getResource("/sound/levelup.wav");
+		soundURL[9] = getClass().getResource("/sound/endingEscape.wav"); //not used yet 
+		soundURL[10] = getClass().getResource("/sound/villagerSE.wav"); //joke change later
+
 
 		
 		
 	}
-	
+	/**
+	 * Changes the file that we wish to play
+	 * 
+	 * @param i
+	 */
 	public void setFile(int i) {
 		try {
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]); //play sound in index
@@ -37,16 +44,25 @@ public class Sound {
 		}
 		
 	}
+	/**
+	 * i feel this is self explanatory
+	 */
 	public void play() {
 		clip.start();
 		
 		
 	}
+	/**
+	 * i feel this is self explanatory
+	 */
 	public void loop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		
 		
 	}
+	/**
+	 * i feel this is self explanatory
+	 */
 	public void stop() {
 		clip.stop();
 		

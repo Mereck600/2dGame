@@ -123,7 +123,12 @@ public class CollisionChecker {
 		return index; 
 
 	} 
-	//npc or something else collision
+	/**npc or something else collision
+	 * 
+	 * @param entity
+	 * @param target
+	 * @return index
+	 */
 	public int checkEntity(Entity entity, Entity[] target) {
 		 int index = 999;
 			//scan obj array 
@@ -166,6 +171,7 @@ public class CollisionChecker {
 	/**collision for when a player hits an npc
 	 * 
 	 * @param entity
+	 * @return contactPlayer
 	 */
 	public boolean checkPlayer(Entity entity) {
 		boolean contactPlayer =false;

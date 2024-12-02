@@ -55,7 +55,10 @@ public class MON_GreenSlime extends Entity{
 //		right1 = setup("/res/monster/greenslime_down_1");
 //		right2 = setup("/res/monster/greenslime_down_2");
 	}
-	
+	/**
+	 * Set action kind of works like the npc movement 
+	 * Really just play with the direction of the slime
+	 */
 	public void setAction() {
 
 		actionLockCounter ++;
@@ -82,7 +85,10 @@ public class MON_GreenSlime extends Entity{
 			actionLockCounter = 0;
 		}
 	}
-	
+	/**
+	 * This is what happens when it is hit
+	 * The direction also changes
+	 */
 	public void damageReaction() {
 		actionLockCounter=0;
 		direction = gp.player.direction;	

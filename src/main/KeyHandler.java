@@ -184,7 +184,14 @@ public class KeyHandler implements KeyListener{
 			}
 		}
 	}
-
+	/**
+	 * Unholy evil code that makes me sad
+	 * far too long and needs to be made simpler
+	 * heres how it works you take a keyCode and then have a ui variable which is for what state the title screen is in aka which menu
+	 * Next you check to see the players key input and move a cursor accordingly; i.e. ui class. 
+	 * Then check if the player hits enter and do a set thing based on where in the code/ menu system you are.
+	 * @param code
+	 */
 	public void titleState(int code) {
 		if(gp.ui.titleScreenState == 0) {
 			if(code == KeyEvent.VK_W) { //user presses w key
@@ -275,9 +282,16 @@ public class KeyHandler implements KeyListener{
 
 			}
 			if (code == KeyEvent.VK_ENTER) {
-				System.out.println("do something related to Fighter");
-				gp.ui.titleScreenState =2;
 				
+				if(gp.ui.commandNum == 3) {
+					System.out.println("going back.");
+					gp.ui.titleScreenState =0;
+					gp.ui.commandNum=0;
+				}
+				else {
+					System.out.println("do something related to Character");
+					gp.ui.titleScreenState =2;
+				}
 			}
 
 		}
@@ -343,7 +357,10 @@ public class KeyHandler implements KeyListener{
 
 		//Add key handler for instruction screen later
 	}
-
+	/**
+	 * Pretty simple just some ifs to check user input and sending that to the specified state or code section
+	 * @param code
+	 */
 	public void playState(int code) {
 		if(code == KeyEvent.VK_W) { //user presses w key
 			//directionPressed = Direction.UP;
@@ -403,6 +420,10 @@ public class KeyHandler implements KeyListener{
 
 		}
 	}
+	/**
+	 * Horribly simple and could use some work to the UI
+	 * @param code
+	 */
 	public void pauseState(int code) {
 		if(code == KeyEvent.VK_P) { //user presses w key
 			gp.gameState = gp.playState;
@@ -410,20 +431,29 @@ public class KeyHandler implements KeyListener{
 
 		}
 	}
-
+	/**
+	 * Changes the state to the dialouge state
+	 * @param code
+	 */
 	public void dialougeState(int code) {
 		if( code == KeyEvent.VK_ENTER) {
 			gp.gameState = gp.playState;
 
 		}
 	}
-
+	/**
+	 * This shows the character stats
+	 * @param code
+	 */
 	public void characterState(int code) {
 		if(code == KeyEvent.VK_C) {
 			gp.gameState = gp.playState;
 		}
 	}
-	
+	/**
+	 * What happens when the player dies
+	 * @param code
+	 */
 	public void dieState(int code) {
 		if(code == KeyEvent.VK_W) { //user presses w key
 			//directionPressed = Direction.UP;
@@ -464,6 +494,7 @@ public class KeyHandler implements KeyListener{
 		if(code == KeyEvent.VK_ENTER) {
 			if(gp.ui.commandNum == 0) { // this is for the load game; this works
 		//*************************************************************************Issue: when player levels up then dies, the heart gained from leveling up stays there**************
+				
 				gp.player.alive =true;
 				//change to title screen state and and into the load section that way I can avoid making another ui method or anything
 				//gp.loadGame("basesave.txt");

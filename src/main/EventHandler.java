@@ -1,7 +1,11 @@
 package main;
 
 import java.awt.Rectangle;
-
+/**
+ * Event handeler is the in game occurances 
+ * An example of this would be when the player steps on a spot and then teleports
+ * This event handler set all of that up
+ */
 public class EventHandler {
 	GamePanel gp;
 	//Rectangle eventRect;
@@ -40,7 +44,7 @@ public class EventHandler {
 		
 	}
 	
-	/*
+	/**
 	 * Checks to see if a entity has hit a certain spot
 	 * just making mainly goofy events for now w
 	 */
@@ -68,7 +72,7 @@ public class EventHandler {
 		}
 		
 		}
-	/*
+	/**
 	 * method to check the event colliosn works similar to object collision
 	 */
 	public boolean hit(int col, int row, String reqDirection) {
@@ -98,6 +102,12 @@ public class EventHandler {
 		
 	}
 	
+	/**
+	 * ANother goofy method Ill make real onves later
+	 * @param col
+	 * @param row
+	 * @param gameState
+	 */
 	public void damagePit(int col, int row,int gameState) {
 		gp.gameState = gameState;
 		gp.playSE(6);
@@ -108,7 +118,7 @@ public class EventHandler {
 		canTouchEvent = false;
 		
 	}
-	/*
+	/**
 	 * Healing will rest health but also rest the monsters on the map
 	 */
 	public void healingPool(int gameState) {
@@ -123,7 +133,11 @@ public class EventHandler {
 		}
 		// gp.keyH.enterPressed = false;   giving errors so i rest in player class
 	}
-	
+	/**
+	 * The best feature in the entire game
+	 * I will be adding more of these eventually
+	 * @param gameState
+	 */
 	public void teleport(int gameState) {
 		gp.gameState = gameState;
 		gp.ui.currentDialouge = "WIZARD TIME";

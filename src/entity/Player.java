@@ -277,6 +277,10 @@ public class Player extends Entity {
 			attacking = false;
 		}
 	}
+	/**
+	 * Method to pick upp objects currently removed because I didn't want it atm 
+	 * @param i
+	 */
 	public void pickUpObject(int i) {
 
 		if(i != 999 ) { // Ensure the object is not null    && gp.obj[i] != null

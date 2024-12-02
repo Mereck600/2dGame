@@ -204,6 +204,7 @@ public class UI {
 	
 	/** 
 	 * method to draw the die screen
+	 * 
 	 */
 	public void drawDieScreen() {
 		//window
