@@ -615,7 +615,7 @@ public class UI {
 				g2.drawString(">", x-gp.tileSize, y);
 			}
 			
-			text = "K to save, L to Load";
+			text = "K to save, L to Load, C for Stats";
 			x =  getXforCenteredText(text);
 			y += gp.tileSize;
 			g2.drawString(text,x,y);		
