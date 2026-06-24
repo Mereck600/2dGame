@@ -2,8 +2,7 @@
 ## CSC 121 final project using Jframe
 
 ### To run:
-Ensure you have the main package selected and press the run button in order to run the game.
-To run the tile editor, select the tileEditor package and select the run Button.
+The Main package will run the game and the tile editor package will run and export any tilemaps you create. Once done, you can add this map to the maps section and ensure it is properly wired into the game.
 
 ### Latest Features:
 * Revisied NPC and Object generation.
@@ -14,4 +13,4 @@ To run the tile editor, select the tileEditor package and select the run Button.
 * Make a new branch everytime you want to make changes and do mot push to main.
 * Here is a site for [pixel art editing](https://www.piskelapp.com)
 Tiles should be added to the res folder and then should be added to the TileManager -> getTileImage array and add settings to the tile depending on what it is. 
-this is made using Jframe with JDK so make sure you have a JDk installed (if you followed the Eclipse install from hamid you should). 
+this is made using Jframe with JDK so make sure you have a JDk installed (if you followed the Eclipse install you should). 
